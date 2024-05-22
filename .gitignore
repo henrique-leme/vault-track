@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# Cache
+*.tsbuildinfo
+.turbo
+
+# Environment variables
+.env
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Jest coverage directory
+coverage/
+
+# Temporary files
+tmp/
+temp/
+
+# Miscellaneous
+*.log
+*.bak
+*.swp
