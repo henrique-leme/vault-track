@@ -13,8 +13,7 @@
     "sourceMap": true,
     "declarationMap": true,
     "incremental": true,
-    "baseUrl": ".",
-    "paths": {}
+    "baseUrl": "."
   },
   "include": [],
   "exclude": ["node_modules", "dist"]
