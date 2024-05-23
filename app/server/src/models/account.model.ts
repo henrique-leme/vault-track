@@ -1,6 +1,6 @@
 import { Decimal128, Document, model, Schema } from 'mongoose'
 
-export interface Account extends Document {
+export interface IAccount extends Document {
   userId: Schema.Types.ObjectId
   accountNumber: number
   balance: Decimal128
@@ -8,7 +8,7 @@ export interface Account extends Document {
   updatedAt?: Date
 }
 
-export interface AccountModel extends Account, Document {
+export interface AccountModel extends IAccount, Document {
   id: string
 }
 
