@@ -8,7 +8,9 @@
     "relay": "turbo run relay",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix"
+    "lint:fix": "turbo run lint:fix",
+    "compose:up": "docker-compose -f docker.compose.yml up -d",
+    "compose:down": "docker-compose -f docker.compose.yml down"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.10.0",

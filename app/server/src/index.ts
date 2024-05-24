@@ -1,9 +1,9 @@
-// import { mongo } from '@/database'
+import { mongo } from '@/database'
 import { config } from '@/config'
 import { setupApp } from './setup-app'
 
 export async function startApp() {
-  // await mongo()
+  await mongo()
 
   setupApp().then((app) => {
     const PORT = config.PORT
