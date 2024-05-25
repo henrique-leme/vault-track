@@ -1,13 +1,14 @@
 version: '3.8'
-
 services:
-  mongodb:
+  mongo:
     image: mongo:latest
-    container_name: mongodb_container
+    container_name: vault_track_mongo
     ports:
-      - '27017:27017'
+      - '37017:27017'
     environment:
-      MONGO_INITDB_DATABASE: vault-tracker
+      - MONGO_INITDB_DATABASE=vault-track
+    volumes:
+      - mongo-data:/data/db
 
 volumes:
   mongo-data:
