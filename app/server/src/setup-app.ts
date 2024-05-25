@@ -14,10 +14,6 @@ export const setupApp = async () => {
 
   //   app.use(authentication)
 
-  router.get('/', async (ctx) => {
-    ctx.body = 'Hello World!'
-  })
-
   router.all(
     '/graphql',
     graphqlHTTP({

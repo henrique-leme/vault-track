@@ -2,6 +2,7 @@ import { GraphQLNonNull, GraphQLString } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
 import { createUser, validateExistingUser } from 'src/services/userServices'
 import { userType } from '../userType'
+import { generateJwt } from 'src/utils/jwt'
 
 export type RegisterUserData = {
   firstName: string
@@ -27,19 +28,24 @@ const mutations = mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async (data: RegisterUserData) => {
-    //Validacao para criar o usuario
     await validateExistingUser(data.taxId)
     const user = await createUser(data)
 
-    // Incluir Jwt
+    const jwt = await generateJwt(user.taxId)
+
     return {
       user,
+      jwt,
     }
   },
   outputFields: {
     user: {
       type: userType,
       resolve: async (payload) => (await payload).user,
+    },
+    jwt: {
+      type: GraphQLString,
+      resolve: async (payload) => (await payload).jwt,
     },
   },
 })
