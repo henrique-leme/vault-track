@@ -2,6 +2,7 @@ import UserModel from 'src/models/user.model'
 import { createAccount } from './accountServices'
 import { hashPassword } from 'src/utils/encryptedPassword'
 import { RegisterUserData } from '@/modules/user/mutations/registerUserMutation'
+import { UserError } from 'src/utils/userError'
 
 export async function validateExistingUser(taxId: string) {
   const existingUser = await UserModel.findOne({
@@ -9,7 +10,12 @@ export async function validateExistingUser(taxId: string) {
   })
 
   if (existingUser) {
-    throw new Error('User already exists')
+    if (existingUser) {
+      throw new UserError({
+        name: 'UserAlreadyExistis',
+        message: 'There is already a user with this taxId.',
+      })
+    }
   }
 
   return false
@@ -47,5 +53,8 @@ export const findUser = async (taxId: string) => {
     return user
   }
 
-  throw new Error('User not found')
+  throw new UserError({
+    name: 'UserNotFound',
+    message: 'There is no user with this taxId.',
+  })
 }
