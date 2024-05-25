@@ -1,8 +1,8 @@
 import { Decimal128, Document, Schema, model } from 'mongoose'
 
 export interface Transaction extends Document {
-  sender: Schema.Types.ObjectId
-  receiver: Schema.Types.ObjectId
+  sender: number
+  receiver: number
   amount: Decimal128
   type: string
   createdAt: Date
@@ -19,13 +19,13 @@ enum ETransactionType {
 
 const TransactionSchema = new Schema({
   sender: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
+    type: Number,
+    ref: 'Account',
     required: true,
   },
   receiver: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
+    type: Number,
+    ref: 'Account',
     required: true,
   },
   amount: {
