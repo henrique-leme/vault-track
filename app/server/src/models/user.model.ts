@@ -2,7 +2,7 @@ import { Document, model, Schema } from 'mongoose'
 
 export interface IUser extends Document {
   firstName: string
-  lastname?: string
+  lastName?: string
   taxId: string
   password: string
   createdAt: Date
@@ -12,32 +12,32 @@ export interface UserModel extends IUser, Document {
   id: string
 }
 
-const UserSchema = new Schema({
-  id: Schema.Types.ObjectId,
-  firstName: {
-    type: String,
-    required: true,
+const UserSchema = new Schema(
+  {
+    id: Schema.Types.ObjectId,
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+    },
+    taxId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  lastname: {
-    type: String,
+  {
+    collection: 'Users',
+    timestamps: true,
   },
-  taxId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-  },
-})
+)
 
 UserSchema.set('toJSON', {
   transform: function (_doc, ret) {

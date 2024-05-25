@@ -9,7 +9,7 @@ export async function validateExistingUser(taxId: string) {
   })
 
   if (existingUser) {
-    throw new Error('User, email, or tax ID (cpf/cnpj) already exists')
+    throw new Error('User already exists')
   }
 
   return false
@@ -19,6 +19,8 @@ export async function createUser(data: RegisterUserData) {
   data.password = await hashPassword(data.password)
 
   const user = await newUser(data)
+
+  user.id = user._id
 
   await createAccount(user.id)
 

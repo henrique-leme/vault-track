@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
-import { userType } from '../userType'
 import { createUser, validateExistingUser } from 'src/services/userServices'
+import { userType } from '../userType'
 
 export type RegisterUserData = {
   firstName: string
@@ -39,7 +39,7 @@ const mutations = mutationWithClientMutationId({
   outputFields: {
     user: {
       type: userType,
-      resolve: (user: any) => user,
+      resolve: async (payload) => (await payload).user,
     },
   },
 })

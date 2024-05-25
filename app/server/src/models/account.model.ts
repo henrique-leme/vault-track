@@ -12,31 +12,30 @@ export interface AccountModel extends IAccount, Document {
   id: string
 }
 
-const AccountSchema = new Schema({
-  id: Schema.Types.ObjectId,
-  accountNumber: {
-    type: Number,
-    required: true,
-    unique: true,
+const AccountSchema = new Schema(
+  {
+    id: Schema.Types.ObjectId,
+    accountNumber: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+      unique: true,
+    },
+    balance: {
+      type: Schema.Types.Decimal128,
+      default: 0.0,
+    },
   },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-    unique: true,
+  {
+    collection: 'Accounts',
+    timestamps: true,
   },
-  balance: {
-    type: Schema.Types.Decimal128,
-    default: 0.0,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-  },
-})
+)
 
 AccountSchema.set('toJSON', {
   transform: function (_doc, ret) {

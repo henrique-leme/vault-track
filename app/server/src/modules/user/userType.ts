@@ -5,10 +5,6 @@ export const userType = new GraphQLObjectType<UserModel>({
   name: 'User',
   description: 'A user object',
   fields: () => ({
-    id: {
-      type: GraphQLString,
-      description: 'The user id ',
-    },
     firstName: {
       type: GraphQLString,
       description: 'The user first name',
@@ -20,10 +16,6 @@ export const userType = new GraphQLObjectType<UserModel>({
     taxId: {
       type: GraphQLString,
       description: 'The taxId of the user',
-    },
-    password: {
-      type: GraphQLString,
-      description: 'User password ',
     },
     createdAt: {
       type: GraphQLString,
