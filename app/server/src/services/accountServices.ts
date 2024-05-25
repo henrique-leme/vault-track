@@ -1,6 +1,7 @@
 import ShortUniqueId from 'short-unique-id'
 import accountModel from 'src/models/account.model'
 import transactionModel from 'src/models/transaction.model'
+import { AccountError } from 'src/utils/accountError'
 
 export async function createAccount(userId: string) {
   await newAccount(userId)
@@ -75,6 +76,9 @@ const findAccount = async (accountNumber: string) => {
 
     return account
   } catch (error) {
-    console.log('Error finding account:', error)
+    throw new AccountError({
+      name: 'AccountNotFound',
+      message: 'There is no account with this accountNumber.',
+    })
   }
 }
