@@ -13,17 +13,13 @@ export const userType = new GraphQLObjectType<UserModel>({
       type: GraphQLString,
       description: 'The user first name',
     },
-    secondName: {
+    lastName: {
       type: GraphQLString,
-      description: 'The user second name',
+      description: 'The user last name',
     },
     taxId: {
       type: GraphQLString,
       description: 'The taxId of the user',
-    },
-    email: {
-      type: GraphQLString,
-      description: 'User email',
     },
     password: {
       type: GraphQLString,

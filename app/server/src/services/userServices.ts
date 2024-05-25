@@ -1,10 +1,11 @@
-import userModel, { UserModel } from 'src/models/user.model'
+import UserModel from 'src/models/user.model'
 import { createAccount } from './accountServices'
 import { hashPassword } from 'src/utils/encryptedPassword'
+import { RegisterUserData } from '@/modules/user/mutations/registerUserMutation'
 
-export async function validateExistingUser(email: string, taxId: string) {
-  const existingUser = await userModel.findOne({
-    $or: [{ email }, { taxId }],
+export async function validateExistingUser(taxId: string) {
+  const existingUser = await UserModel.findOne({
+    taxId: taxId,
   })
 
   if (existingUser) {
@@ -14,20 +15,21 @@ export async function validateExistingUser(email: string, taxId: string) {
   return false
 }
 
-export async function createUser(data: UserModel) {
+export async function createUser(data: RegisterUserData) {
   data.password = await hashPassword(data.password)
 
   const user = await newUser(data)
 
   await createAccount(user.id)
+
+  return user
 }
 
-const newUser = async (data: UserModel) => {
-  const user = new userModel({
+const newUser = async (data: RegisterUserData) => {
+  const user = await UserModel.create({
     firstName: data.firstName,
-    lastName: data.lastname ?? '',
+    lastName: data.lastName ?? '',
     taxId: data.taxId,
-    email: data.email,
     password: data.password,
   })
 
@@ -35,7 +37,7 @@ const newUser = async (data: UserModel) => {
 }
 
 export const findUser = async (taxId: string) => {
-  const user = await userModel.findOne({
+  const user = await UserModel.findOne({
     $match: { taxId: taxId },
   })
 
