@@ -1,32 +1,37 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
-import { userType } from '../userType'
+import { validateUserLogin } from 'src/services/userServices'
+import { generateJwt } from 'src/utils/jwt'
+
+export type LoginUserData = {
+  taxId: string
+  password: string
+}
 
 const mutations = mutationWithClientMutationId({
   name: 'LoginUser',
   inputFields: {
-    email: {
+    taxId: {
       type: new GraphQLNonNull(GraphQLString),
     },
     password: {
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  outputFields: {
-    user: {
-      type: userType,
-      resolve: (user: any) => `${user}`,
-    },
-    token: {
-      type: GraphQLString,
-      resolve: (token: any) => `${token}`,
-    },
-  },
-  mutateAndGetPayload: async (input) => {
-    // Validacao para logar o usuario
+  mutateAndGetPayload: async (data: LoginUserData) => {
+    await validateUserLogin(data)
+
+    const jwt = await generateJwt(data.taxId)
+
     return {
-      content: input.content,
+      jwt,
     }
+  },
+  outputFields: {
+    jwt: {
+      type: GraphQLString,
+      resolve: async (payload) => (await payload).jwt,
+    },
   },
 })
 
