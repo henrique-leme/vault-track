@@ -20,7 +20,9 @@ export const setupApp = async () => {
     graphqlHTTP(async (_req, _res, ctx) => {
       return {
         schema: graphqlSchema,
-        graphiql: true,
+        graphiql: {
+          headerEditorEnabled: true,
+        },
         context: ctx.state.context,
       }
     }),
