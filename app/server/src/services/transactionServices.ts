@@ -1,7 +1,7 @@
 import { AccountModel } from 'src/models/account.model'
 import { TransactionError } from 'src/utils/transactionError'
 import { findAccountByTaxId } from './accountServices'
-import { TransactionData } from '@/modules/transaction/mutations/transactionMutations'
+import { TransactionData } from '@/modules/transaction/mutations/createTransaction'
 import transactionModel from 'src/models/transaction.model'
 import mongoose from 'mongoose'
 
