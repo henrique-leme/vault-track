@@ -4,6 +4,7 @@ import { mutationWithClientMutationId } from 'graphql-relay'
 import { updateBalance } from 'src/services/accountServices'
 import { jwtValidation } from 'src/utils/jwt'
 import {
+  createDepositTransaction,
   createTransaction,
   idempotencyCheck,
   transactionAccountValidations,
@@ -44,8 +45,18 @@ const mutation = mutationWithClientMutationId({
 
     if (invalidTransaction === false) {
       const { accountNumber } = await transactionAccountValidations(data)
-      await createTransaction(data, idempotencyId)
-      await updateBalance(accountNumber)
+      switch (data.type) {
+        case 'DEPOSIT':
+          await createDepositTransaction(data, idempotencyId)
+          await updateBalance(accountNumber)
+
+          break
+        case 'TRANSFER':
+          await createTransaction(data, idempotencyId)
+          await updateBalance(accountNumber)
+
+          break
+      }
     }
   },
   outputFields: {},

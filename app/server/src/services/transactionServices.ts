@@ -89,3 +89,29 @@ const verifyBalance = async (amount: number, userAccount: AccountModel) => {
     message: 'Insufficient balance to make this transaction.',
   })
 }
+
+// This is only used for making possible the test of sending
+// currency to other accounts, since an account is created
+// by default with a balance of 0.
+// And in a real application, it would be possible to receive
+// money from other banks and stuff
+export async function createDepositTransaction(
+  data: TransactionData,
+  idempotencyId: string,
+) {
+  const accountSender = 10000000000
+  const { accountNumber: accountReceiver } = await findAccountByTaxId(
+    data.receiver,
+  )
+  const decimalAmount = mongoose.Types.Decimal128.fromString(
+    data.amount.toString(),
+  )
+
+  await newTransaction(
+    data,
+    accountSender,
+    accountReceiver,
+    decimalAmount,
+    idempotencyId,
+  )
+}
