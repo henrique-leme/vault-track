@@ -5,6 +5,7 @@ export interface Transaction extends Document {
   receiver: number
   amount: Decimal128
   type: string
+  description?: string
   createdAt: Date
 }
 
@@ -13,35 +14,40 @@ export interface TransactionModel extends Transaction, Document {
 }
 
 enum ETransactionType {
-  DEPOSIT = 'deposit',
-  WITHDRAW = 'withdraw',
+  TRANSFER = 'TRANSFER',
+  DEPOSIT = 'DEPOSIT',
 }
 
-const TransactionSchema = new Schema({
-  sender: {
-    type: Number,
-    ref: 'Account',
-    required: true,
+const TransactionSchema = new Schema(
+  {
+    sender: {
+      type: Number,
+      ref: 'Account',
+      required: true,
+    },
+    receiver: {
+      type: Number,
+      ref: 'Account',
+      required: true,
+    },
+    amount: {
+      type: Schema.Types.Decimal128,
+      required: true,
+    },
+    type: {
+      type: String,
+      enum: ETransactionType,
+      required: true,
+    },
+    description: {
+      type: String,
+    },
   },
-  receiver: {
-    type: Number,
-    ref: 'Account',
-    required: true,
+  {
+    collection: 'Transactions',
+    timestamps: true,
   },
-  amount: {
-    type: Schema.Types.Decimal128,
-    required: true,
-  },
-  type: {
-    type: String,
-    enum: ETransactionType,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-})
+)
 
 TransactionSchema.set('toJSON', {
   transform: function (_doc, ret) {
