@@ -1,5 +1,5 @@
 import { DefaultError } from './defaultError'
 
-type ErrorType = 'TransactionError'
+type ErrorType = 'NotEnoughBalance' | 'TransactionFailed'
 
-export class AccountError extends DefaultError<ErrorType> {}
+export class TransactionError extends DefaultError<ErrorType> {}

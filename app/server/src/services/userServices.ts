@@ -9,12 +9,10 @@ export async function validateExistingUser(taxId: string) {
   const existingUser = await findUser(taxId)
 
   if (existingUser) {
-    if (existingUser) {
-      throw new UserError({
-        name: 'UserAlreadyExistis',
-        message: 'There is already a user with this taxId.',
-      })
-    }
+    throw new UserError({
+      name: 'UserAlreadyExistis',
+      message: 'There is already a user with this taxId.',
+    })
   }
 
   return false
@@ -25,9 +23,13 @@ export async function validateUserLogin(data: LoginUserData) {
 
   if (existingUser) {
     await validatePassword(data.password, existingUser.password)
-  }
 
-  return true
+    return true
+  }
+  throw new UserError({
+    name: 'UserNotFound',
+    message: 'There is no user with this taxId.',
+  })
 }
 
 export async function createUser(data: RegisterUserData) {
@@ -62,8 +64,5 @@ export const findUser = async (taxId: string) => {
     return user
   }
 
-  throw new UserError({
-    name: 'UserNotFound',
-    message: 'There is no user with this taxId.',
-  })
+  return false
 }

@@ -1,7 +1,6 @@
 import {
   GraphQLEnumType,
   GraphQLFloat,
-  GraphQLInt,
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql'
@@ -20,11 +19,11 @@ export const tranasctionType = new GraphQLObjectType<TransactionModel>({
   description: 'A transaction object',
   fields: () => ({
     sender: {
-      type: GraphQLInt,
+      type: GraphQLString,
       description: 'The account that is sending the transaction',
     },
     receiver: {
-      type: GraphQLInt,
+      type: GraphQLString,
       description: 'The account that is receiving the transaction',
     },
     amount: {

@@ -1,30 +1,30 @@
-import {
-  GraphQLFloat,
-  GraphQLInt,
-  GraphQLNonNull,
-  GraphQLString,
-} from 'graphql'
+import { GraphQLFloat, GraphQLNonNull, GraphQLString } from 'graphql'
 import { ETransactionEnumType } from '../transactionType'
 import { mutationWithClientMutationId } from 'graphql-relay'
 import { updateBalance } from 'src/services/accountServices'
 import { jwtValidation } from 'src/utils/jwt'
+import {
+  createTransaction,
+  idempotencyCheck,
+  transactionAccountValidations,
+} from 'src/services/transactionServices'
 
-type TransactionData = {
-  sender: number
-  receiver: number
+export type TransactionData = {
+  sender: string
+  receiver: string
   amount: number
   type: string
   description?: string
 }
 
-const mutations = mutationWithClientMutationId({
+const mutation = mutationWithClientMutationId({
   name: 'CreateTransaction',
   inputFields: {
     sender: {
-      type: new GraphQLNonNull(GraphQLInt),
+      type: new GraphQLNonNull(GraphQLString),
     },
     receiver: {
-      type: new GraphQLNonNull(GraphQLInt),
+      type: new GraphQLNonNull(GraphQLString),
     },
     amount: {
       type: new GraphQLNonNull(GraphQLFloat),
@@ -36,19 +36,21 @@ const mutations = mutationWithClientMutationId({
       type: GraphQLString,
     },
   },
-  mutateAndGetPayload: async (data: TransactionData) => {
-    // Validar JWT
-    await jwtValidation('')
-    // Validar Contas da Transacao e Saldo
-    await transactionAccountValidations()
-    // Criar Transacao
-    await createTransaction()
-    // Atualizar Saldo
-    await updateBalance()
+  mutateAndGetPayload: async (data: TransactionData, ctx) => {
+    const { jwt, idempotencyId } = ctx
+
+    await jwtValidation(jwt)
+    const invalidTransaction = await idempotencyCheck(idempotencyId)
+
+    if (invalidTransaction === false) {
+      const { accountNumber } = await transactionAccountValidations(data)
+      await createTransaction(data, idempotencyId)
+      await updateBalance(accountNumber)
+    }
   },
   outputFields: {},
 })
 
 export const TransactionMutation = {
-  ...mutations,
+  ...mutation,
 }
