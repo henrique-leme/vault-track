@@ -20,6 +20,11 @@ enum ETransactionType {
 
 const TransactionSchema = new Schema(
   {
+    idempotencyId: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     sender: {
       type: Number,
       ref: 'Account',

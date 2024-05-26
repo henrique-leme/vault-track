@@ -1,10 +1,14 @@
 import { config } from '@/config'
 import jwt from 'jsonwebtoken'
 import { TokenError } from './tokenError'
+import { findAccountByTaxId } from 'src/services/accountServices'
 
 export async function generateJwt(taxId: string) {
+  const { _id } = await findAccountByTaxId(taxId)
+
   const payload = {
     taxId,
+    uniqueId: _id,
   }
   const jwtToken = jwt.sign(payload, config.JWT_KEY, { expiresIn: '30min' })
 
