@@ -8,7 +8,7 @@ export type LoginUserData = {
   password: string
 }
 
-const mutations = mutationWithClientMutationId({
+const mutation = mutationWithClientMutationId({
   name: 'LoginUser',
   inputFields: {
     taxId: {
@@ -36,5 +36,5 @@ const mutations = mutationWithClientMutationId({
 })
 
 export const LoginUserMutation = {
-  ...mutations,
+  ...mutation,
 }

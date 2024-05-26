@@ -11,7 +11,7 @@ export type RegisterUserData = {
   password: string
 }
 
-const mutations = mutationWithClientMutationId({
+const mutation = mutationWithClientMutationId({
   name: 'RegisterUser',
   inputFields: {
     firstName: {
@@ -51,5 +51,5 @@ const mutations = mutationWithClientMutationId({
 })
 
 export const RegisterUserMutation = {
-  ...mutations,
+  ...mutation,
 }
