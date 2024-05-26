@@ -8,6 +8,7 @@ import {
   createTransaction,
   idempotencyCheck,
   transactionAccountValidations,
+  verifyBalance,
 } from 'src/services/transactionServices'
 
 export type TransactionData = {
@@ -16,6 +17,11 @@ export type TransactionData = {
   amount: number
   type: string
   description?: string
+}
+
+enum ETransactionMessageResponse {
+  SUCCEED = 'Transaction have been processed sucessfuly.',
+  EXISTED = 'Transaction have already been processed.',
 }
 
 const mutation = mutationWithClientMutationId({
@@ -44,23 +50,34 @@ const mutation = mutationWithClientMutationId({
     const invalidTransaction = await idempotencyCheck(idempotencyId)
 
     if (invalidTransaction === false) {
-      const { accountNumber } = await transactionAccountValidations(data)
+      const userAccount = await transactionAccountValidations(data)
       switch (data.type) {
         case 'DEPOSIT':
           await createDepositTransaction(data, idempotencyId)
-          await updateBalance(accountNumber)
+          await updateBalance(userAccount.accountNumber)
 
           break
         case 'TRANSFER':
           await createTransaction(data, idempotencyId)
-          await updateBalance(accountNumber)
+          await verifyBalance(data.amount, userAccount)
+          await updateBalance(userAccount.accountNumber)
 
           break
       }
+      return {
+        message: ETransactionMessageResponse.SUCCEED,
+      }
     }
-    return
+    return {
+      message: ETransactionMessageResponse.EXISTED,
+    }
   },
-  outputFields: {},
+  outputFields: {
+    message: {
+      type: GraphQLString,
+      resolve: async (payload) => (await payload).message,
+    },
+  },
 })
 
 export const CreateTransactionMutation = {

@@ -8,7 +8,6 @@ import mongoose from 'mongoose'
 export async function transactionAccountValidations(data: TransactionData) {
   const userAccount = await accountSenderValidation(data.sender)
   await accountReceiverValidation(data.receiver)
-  await verifyBalance(data.amount, userAccount)
 
   return userAccount
 }
@@ -52,7 +51,7 @@ const newTransaction = async (
   decimalAmount: mongoose.Types.Decimal128,
   idempotencyId: string,
 ) => {
-  await transactionModel.create({
+  const teste = await transactionModel.create({
     sender: accountSender,
     receiver: accountReceiver,
     amount: decimalAmount,
@@ -60,6 +59,8 @@ const newTransaction = async (
     description: data.description ?? '',
     idempotencyId: idempotencyId,
   })
+
+  return teste
 }
 
 const accountSenderValidation = async (taxId: string) => {
@@ -74,13 +75,17 @@ const accountReceiverValidation = async (taxId: string) => {
   return true
 }
 
-const verifyBalance = async (amount: number, userAccount: AccountModel) => {
+// Transformar em function
+export const verifyBalance = async (
+  amount: number,
+  userAccount: AccountModel,
+) => {
   const { balance } = userAccount
 
   const parsedAmount = parseFloat(amount.toString())
   const parsedBalance = parseFloat(balance.toString())
 
-  if (parsedBalance <= parsedAmount) {
+  if (parsedBalance >= parsedAmount) {
     return true
   }
 

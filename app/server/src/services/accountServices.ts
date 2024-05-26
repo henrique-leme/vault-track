@@ -69,7 +69,7 @@ export const updateBalance = async (accountNumber: number) => {
       accountNumber: accountNumber,
     },
     {
-      balance: currentBalance,
+      balance: currentBalance[0].balance,
     },
   )
 
