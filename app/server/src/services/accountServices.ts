@@ -1,7 +1,10 @@
+import mongoose from 'mongoose'
 import ShortUniqueId from 'short-unique-id'
 import accountModel from 'src/models/account.model'
 import transactionModel from 'src/models/transaction.model'
+import userModel from 'src/models/user.model'
 import { AccountError } from 'src/utils/accountError'
+import { UserError } from 'src/utils/userError'
 
 export async function createAccount(userId: string) {
   await newAccount(userId)
@@ -13,7 +16,6 @@ const newAccount = async (userId: string) => {
   await accountModel.create({
     accountNumber: accountNumer,
     userId: userId,
-    balance: 0.0,
   })
 }
 
@@ -26,11 +28,11 @@ const generateAccountNumber = async (): Promise<number> => {
   return parseInt(accountNumber)
 }
 
-export const calculateBalance = async (userId: string) => {
-  const transactions = await transactionModel.aggregate([
+export const calculateBalance = async (accountNumber: number) => {
+  const currentBalance = await transactionModel.aggregate([
     {
       $match: {
-        $or: [{ sender: userId }, { receiver: userId }],
+        $or: [{ sender: accountNumber }, { receiver: accountNumber }],
       },
     },
     {
@@ -39,8 +41,13 @@ export const calculateBalance = async (userId: string) => {
         balance: {
           $sum: {
             $cond: [
-              { $eq: ['$sender', userId] },
-              { $multiply: ['$amount', -1] },
+              { $eq: ['$sender', accountNumber] },
+              {
+                $multiply: [
+                  '$amount',
+                  mongoose.Types.Decimal128.fromString('-1'),
+                ],
+              },
               '$amount',
             ],
           },
@@ -49,14 +56,13 @@ export const calculateBalance = async (userId: string) => {
     },
   ])
 
-  return transactions
+  return currentBalance
 }
 
-export const updateBalance = async (
-  accountNumber: string,
-  currentBalance: string,
-) => {
-  await findAccount(accountNumber)
+export const updateBalance = async (accountNumber: number) => {
+  await findAccountByAccountNumber(accountNumber)
+
+  const currentBalance = await calculateBalance(accountNumber)
 
   await accountModel.findOneAndUpdate(
     {
@@ -70,7 +76,7 @@ export const updateBalance = async (
   return true
 }
 
-const findAccount = async (accountNumber: string) => {
+const findAccountByAccountNumber = async (accountNumber: number) => {
   try {
     const account = await accountModel.findOne({ accountNumber: accountNumber })
 
@@ -81,4 +87,35 @@ const findAccount = async (accountNumber: string) => {
       message: 'There is no account with this accountNumber.',
     })
   }
+}
+
+export async function findAccountByUserId(userId: any) {
+  const account = await accountModel.findOne({
+    userId: userId,
+  })
+
+  if (account) {
+    return account
+  }
+
+  throw new AccountError({
+    name: 'AccountNotFound',
+    message: 'There is no account for this user, contact the support.',
+  })
+}
+
+export async function findAccountByTaxId(taxId: string) {
+  const user = await userModel.findOne({
+    taxId: taxId,
+  })
+
+  if (user) {
+    const account = await findAccountByUserId(user._id)
+    return account
+  }
+
+  throw new UserError({
+    name: 'UserNotFound',
+    message: 'There is no user with this taxId.',
+  })
 }

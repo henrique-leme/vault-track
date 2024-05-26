@@ -1,4 +1,4 @@
-import { Decimal128, Document, model, Schema } from 'mongoose'
+import mongoose, { Decimal128, Document, model, Schema } from 'mongoose'
 
 export interface IAccount extends Document {
   userId: Schema.Types.ObjectId
@@ -14,7 +14,6 @@ export interface AccountModel extends IAccount, Document {
 
 const AccountSchema = new Schema(
   {
-    id: Schema.Types.ObjectId,
     accountNumber: {
       type: Number,
       required: true,
@@ -28,7 +27,7 @@ const AccountSchema = new Schema(
     },
     balance: {
       type: Schema.Types.Decimal128,
-      default: 0.0,
+      default: new mongoose.Types.Decimal128('0.0'),
     },
   },
   {
