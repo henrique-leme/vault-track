@@ -17,9 +17,5 @@ export const userType = new GraphQLObjectType<UserModel>({
       type: GraphQLString,
       description: 'The taxId of the user',
     },
-    createdAt: {
-      type: GraphQLString,
-      description: 'The date that user was created',
-    },
   }),
 })

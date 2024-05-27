@@ -6,10 +6,10 @@ import transactionModel from 'src/models/transaction.model'
 import mongoose from 'mongoose'
 
 export async function transactionAccountValidations(data: TransactionData) {
-  const userAccount = await accountSenderValidation(data.sender)
-  await accountReceiverValidation(data.receiver)
+  const senderAccount = await findAccountByTaxId(data.sender)
+  const receiverAccount = await findAccountByTaxId(data.receiver)
 
-  return userAccount
+  return { senderAccount, receiverAccount }
 }
 
 export async function idempotencyCheck(idempotencyId: string) {
@@ -51,7 +51,7 @@ const newTransaction = async (
   decimalAmount: mongoose.Types.Decimal128,
   idempotencyId: string,
 ) => {
-  const teste = await transactionModel.create({
+  await transactionModel.create({
     sender: accountSender,
     receiver: accountReceiver,
     amount: decimalAmount,
@@ -59,20 +59,6 @@ const newTransaction = async (
     description: data.description ?? '',
     idempotencyId: idempotencyId,
   })
-
-  return teste
-}
-
-const accountSenderValidation = async (taxId: string) => {
-  const account = await findAccountByTaxId(taxId)
-
-  return account
-}
-
-const accountReceiverValidation = async (taxId: string) => {
-  await findAccountByTaxId(taxId)
-
-  return true
 }
 
 // Transformar em function

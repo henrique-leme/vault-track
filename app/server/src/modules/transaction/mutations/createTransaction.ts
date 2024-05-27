@@ -50,17 +50,20 @@ const mutation = mutationWithClientMutationId({
     const invalidTransaction = await idempotencyCheck(idempotencyId)
 
     if (invalidTransaction === false) {
-      const userAccount = await transactionAccountValidations(data)
+      const { senderAccount, receiverAccount } =
+        await transactionAccountValidations(data)
       switch (data.type) {
         case 'DEPOSIT':
           await createDepositTransaction(data, idempotencyId)
-          await updateBalance(userAccount.accountNumber)
+          await updateBalance(receiverAccount.accountNumber)
 
           break
         case 'TRANSFER':
+          await verifyBalance(data.amount, senderAccount)
           await createTransaction(data, idempotencyId)
-          await verifyBalance(data.amount, userAccount)
-          await updateBalance(userAccount.accountNumber)
+
+          await updateBalance(senderAccount.accountNumber)
+          await updateBalance(receiverAccount.accountNumber)
 
           break
       }
