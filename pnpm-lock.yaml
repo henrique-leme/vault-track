@@ -69,15 +69,15 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.3.0(vite@5.2.11(@types/node@20.12.12)(terser@5.31.0))
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.0
       eslint-plugin-react-hooks:
         specifier: ^4.6.0
         version: 4.6.2(eslint@8.57.0)
       eslint-plugin-react-refresh:
         specifier: ^0.4.6
         version: 0.4.7(eslint@8.57.0)
+      relay-compiler:
+        specifier: ^16.2.0
+        version: 16.2.0
       typescript:
         specifier: ^5.2.2
         version: 5.4.5
@@ -2567,6 +2567,10 @@ packages:
 
   regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
+
+  relay-compiler@16.2.0:
+    resolution: {integrity: sha512-KuyzUBKL9PZRNtIZWNlWEOl7OliUxaGJ2d+3mkiWEiGCEuGnNTxqEg4kJyL341aIGZC4gSqEpfvRTcMqnSM4qQ==}
+    hasBin: true
 
   relay-runtime@16.2.0:
     resolution: {integrity: sha512-SrIyYItH1EZUj37NI8nZALasuq7mNyFrrSNgMefhgxNZxTVnr1KCp43LaxUfZqhsWbw4Y00JSGDRQXlcv4STHQ==}
@@ -5848,6 +5852,8 @@ snapshots:
       tslib: 2.6.2
 
   regenerator-runtime@0.14.1: {}
+
+  relay-compiler@16.2.0: {}
 
   relay-runtime@16.2.0:
     dependencies:
