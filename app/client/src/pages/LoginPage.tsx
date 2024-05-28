@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 function LoginPage() {
   return (
     <>
-      <div>
+      <div className="container">
         <h1>Welcome to VaultTrack</h1>
         <p>
           Enjoy all the features that make it easy for you to manage your
