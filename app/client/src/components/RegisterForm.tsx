@@ -49,6 +49,7 @@ export function RegisterForm() {
   })
 
   function onSubmit(values: z.infer<typeof registerFormSchema>) {
+    //autentication
     console.log(values)
   }
   return (
@@ -115,7 +116,9 @@ export function RegisterForm() {
               </FormItem>
             )}
           />
-          <Button type="submit">Register</Button>
+          <Button type="submit" className="buttonForm">
+            Register
+          </Button>
         </form>
       </Form>
     </>
