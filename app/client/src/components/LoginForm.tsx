@@ -8,9 +8,9 @@ import {
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
+import { Textarea } from './ui/textarea'
 
 const loginFormSchema = z.object({
   taxId: z
@@ -44,9 +44,7 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     console.log(values)
-    // Aqui você faria a lógica de autenticação, por exemplo:
-    // const result = await loginUser(values)
-    // if (result.success) {
+    //Autenticar
     navigate('/home')
     // }
   }
@@ -54,14 +52,14 @@ export function LoginForm() {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="taxId"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Tax Identification..." {...field} />
+                  <Textarea placeholder="Tax Identification..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -73,13 +71,15 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Password..." {...field} />
+                  <Textarea placeholder="Password..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" className="buttonForm">
+            Submit
+          </Button>
         </form>
       </Form>
     </>
