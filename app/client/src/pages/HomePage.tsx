@@ -1,22 +1,11 @@
 import BalanceCard from '@/components/BalanceCard'
-import Menu from '@/components/DropdownMenu'
-import { buttonVariants } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Link } from 'react-router-dom'
+// import Menu from '@/components/DropdownMenu'
 
 function HomePage() {
   return (
     <>
-      <Menu />
+      {/* <Menu /> */}
       <BalanceCard />
-      <Card>
-        <Link className={buttonVariants({ variant: 'outline' })} to={''}>
-          Click here
-        </Link>{' '}
-        <Link className={buttonVariants({ variant: 'outline' })} to={''}>
-          Click here
-        </Link>{' '}
-      </Card>
     </>
   )
 }

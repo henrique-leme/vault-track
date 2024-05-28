@@ -1,14 +1,20 @@
-import { Card, CardContent, CardHeader } from './ui/card'
+import { Button } from './ui/button'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 
 const BalanceCard = () => {
   return (
-    <Card>
+    <Card className="balanceCard">
       <CardHeader>
-        <h2>Account Balance</h2>
+        <CardTitle>Account Balance</CardTitle>
       </CardHeader>
       <CardContent>
-        <p>12232131234</p>
+        <div>AccountNumber: 0000000000000000</div>
+        <div>Balance: 000000000</div>
       </CardContent>
+      <CardFooter className="balanceCardFooter">
+        <Button className="balanceCardButton">Deposit</Button>
+        <Button className="balanceCardButton">Transaction</Button>
+      </CardFooter>
     </Card>
   )
 }
