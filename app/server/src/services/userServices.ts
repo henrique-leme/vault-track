@@ -3,7 +3,7 @@ import { createAccount } from './accountServices'
 import { hashPassword, validatePassword } from 'src/utils/encryptedPassword'
 import { RegisterUserData } from '@/modules/user/mutations/registerUserMutation'
 import { UserError } from 'src/utils/userError'
-import { LoginUserData } from '@/modules/user/mutations/loginUserMutation'
+import { UpdateUserData } from '@/modules/user/mutations/updateUserMutation'
 
 export async function validateExistingUser(taxId: string) {
   const existingUser = await findUser(taxId)
@@ -31,11 +31,11 @@ export async function validateUserExists(taxId: string) {
   })
 }
 
-export async function validateUserLogin(data: LoginUserData) {
-  const existingUser = await findUser(data.taxId)
+export async function validateUserAndPassword(taxId: string, password: string) {
+  const existingUser = await findUser(taxId)
 
   if (existingUser) {
-    await validatePassword(data.password, existingUser.password)
+    await validatePassword(password, existingUser.password)
 
     return existingUser
   }
@@ -84,4 +84,25 @@ export async function deleteUserByTaxId(taxId: string) {
   await UserModel.deleteOne({ taxId: taxId })
 
   return true
+}
+
+export async function updateUser(taxId: string, data: UpdateUserData) {
+  const { firstName, lastName, newPassword } = data
+
+  const newUserInformation: any = {}
+
+  if (firstName) newUserInformation.firstName = firstName
+  if (lastName) newUserInformation.lastName = lastName
+
+  if (newPassword) {
+    newUserInformation.password = await hashPassword(newPassword)
+  }
+
+  const updatedUser = await UserModel.findOneAndUpdate(
+    { taxId: taxId },
+    { ...newUserInformation },
+    { new: true },
+  )
+
+  return updatedUser
 }

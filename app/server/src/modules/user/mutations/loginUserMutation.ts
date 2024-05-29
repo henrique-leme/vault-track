@@ -1,6 +1,6 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
-import { validateUserLogin } from 'src/services/userServices'
+import { validateUserAndPassword } from 'src/services/userServices'
 import { generateJwt } from 'src/utils/jwt'
 import { userType } from '../userType'
 
@@ -20,7 +20,7 @@ const mutation = mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async (data: LoginUserData) => {
-    const validUser = await validateUserLogin(data)
+    const validUser = await validateUserAndPassword(data.taxId, data.password)
 
     const jwt = await generateJwt(data.taxId)
 
