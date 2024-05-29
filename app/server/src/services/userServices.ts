@@ -1,8 +1,11 @@
-import UserModel from 'src/models/user.model'
-import { createAccount } from './accountServices'
-import { hashPassword, validatePassword } from 'src/utils/encryptedPassword'
+import userModel from '../../src/models/user.model'
+import { createAccount } from '../../src/services/accountServices'
+import {
+  hashPassword,
+  validatePassword,
+} from '../../src/utils/encryptedPassword'
 import { RegisterUserData } from '@/modules/user/mutations/registerUserMutation'
-import { UserError } from 'src/utils/userError'
+import { UserError } from '../../src/utils/userError'
 import { UpdateUserData } from '@/modules/user/mutations/updateUserMutation'
 
 export async function validateExistingUser(taxId: string) {
@@ -58,7 +61,7 @@ export async function createUser(data: RegisterUserData) {
 }
 
 const newUser = async (data: RegisterUserData) => {
-  const user = await UserModel.create({
+  const user = await userModel.create({
     firstName: data.firstName,
     lastName: data.lastName ?? '',
     taxId: data.taxId,
@@ -69,7 +72,7 @@ const newUser = async (data: RegisterUserData) => {
 }
 
 export const findUser = async (taxId: string) => {
-  const user = await UserModel.findOne({
+  const user = await userModel.findOne({
     taxId: taxId,
   })
 
@@ -81,7 +84,7 @@ export const findUser = async (taxId: string) => {
 }
 
 export async function deleteUserByTaxId(taxId: string) {
-  await UserModel.deleteOne({ taxId: taxId })
+  await userModel.deleteOne({ taxId: taxId })
 
   return true
 }
@@ -98,7 +101,7 @@ export async function updateUser(taxId: string, data: UpdateUserData) {
     newUserInformation.password = await hashPassword(newPassword)
   }
 
-  const updatedUser = await UserModel.findOneAndUpdate(
+  const updatedUser = await userModel.findOneAndUpdate(
     { taxId: taxId },
     { ...newUserInformation },
     { new: true },

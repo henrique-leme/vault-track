@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
 import ShortUniqueId from 'short-unique-id'
-import accountModel from 'src/models/account.model'
-import transactionModel from 'src/models/transaction.model'
-import userModel from 'src/models/user.model'
-import { AccountError } from 'src/utils/accountError'
-import { UserError } from 'src/utils/userError'
+import accountModel from '../../src/models/account.model'
+import transactionModel from '../../src/models/transaction.model'
+import userModel from '../../src/models/user.model'
+import { AccountError } from '../../src/utils/accountError'
+import { UserError } from '../../src/utils/userError'
 
 export async function createAccount(userId: string) {
   await newAccount(userId)
@@ -56,24 +56,27 @@ export const calculateBalance = async (accountNumber: number) => {
     },
   ])
 
-  return currentBalance
+  return currentBalance.map((balance: any) => ({
+    ...balance,
+    balance: mongoose.Types.Decimal128.fromString(balance.balance.toString()),
+  }))
 }
 
 export const updateBalance = async (accountNumber: number) => {
   await findAccountByAccountNumber(accountNumber)
 
   const currentBalance = await calculateBalance(accountNumber)
-
-  await accountModel.findOneAndUpdate(
+  const account = await accountModel.findOneAndUpdate(
     {
       accountNumber: accountNumber,
     },
     {
       balance: currentBalance[0].balance,
     },
+    { new: true },
   )
 
-  return true
+  return account?.balance
 }
 
 const findAccountByAccountNumber = async (accountNumber: number) => {
@@ -120,21 +123,19 @@ export async function findAccountByTaxId(taxId: string) {
   })
 }
 
-export async function findAccountWithUpdatedBalance(taxId: string) {
+export async function findAccountAndUpdatedBalance(taxId: string) {
   const user = await userModel.findOne({
     taxId: taxId,
   })
 
   if (user) {
-    const { accountNumber, userId, balance } = await findAccountByUserId(
-      user._id,
-    )
-    await updateBalance(accountNumber)
+    const { accountNumber, userId } = await findAccountByUserId(user._id)
+    const balance = await updateBalance(accountNumber)
 
     const account = {
       accountNumber: accountNumber,
       userId: userId.toString(),
-      balance: parseFloat(balance.toString()),
+      balance: parseFloat(balance!.toString()),
     }
 
     return account
@@ -146,17 +147,16 @@ export async function findAccountWithUpdatedBalance(taxId: string) {
   })
 }
 
-export async function deleteAccount(accouuntNumber: number) {
-  const balance = await calculateBalance(accouuntNumber)
-
-  if (balance[0].balance !== 0) {
+export async function deleteAccount(accountNumber: number) {
+  const balance = await calculateBalance(accountNumber)
+  if (balance.length > 0 && balance[0].balance.toString() !== '0.0') {
     throw new AccountError({
       name: 'DeleteAccountError',
       message: 'You cant delete an account with balance.',
     })
   }
 
-  await accountModel.deleteOne({ accountNumber: accouuntNumber })
+  await accountModel.deleteOne({ accountNumber: accountNumber })
 
   return true
 }

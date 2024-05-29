@@ -47,5 +47,4 @@ UserSchema.set('toJSON', {
     delete ret.password
   },
 })
-
 export default model<UserModel>('User', UserSchema)

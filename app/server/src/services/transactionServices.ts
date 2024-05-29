@@ -1,8 +1,8 @@
-import { AccountModel } from 'src/models/account.model'
-import { TransactionError } from 'src/utils/transactionError'
-import { findAccountByTaxId } from './accountServices'
+import { AccountModel } from '../../src/models/account.model'
+import { TransactionError } from '../../src/utils/transactionError'
+import { findAccountByTaxId } from '../../src/services/accountServices'
 import { TransactionData } from '@/modules/transaction/mutations/createTransaction'
-import transactionModel from 'src/models/transaction.model'
+import transactionModel from '../../src/models/transaction.model'
 import mongoose from 'mongoose'
 
 export async function transactionAccountValidations(data: TransactionData) {
@@ -61,11 +61,7 @@ const newTransaction = async (
   })
 }
 
-// Transformar em function
-export const verifyBalance = async (
-  amount: number,
-  userAccount: AccountModel,
-) => {
+export async function verifyBalance(amount: number, userAccount: AccountModel) {
   const { balance } = userAccount
 
   const parsedAmount = parseFloat(amount.toString())
@@ -80,7 +76,6 @@ export const verifyBalance = async (
     message: 'Insufficient balance to make this transaction.',
   })
 }
-
 export async function listTransactionsByAccountNumber(accountNumber: number) {
   const transactions = await transactionModel.find({
     $or: [{ sender: accountNumber }, { receiver: accountNumber }],

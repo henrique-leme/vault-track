@@ -5,7 +5,7 @@ import {
 } from 'graphql-relay'
 import { GraphQLString } from 'graphql'
 import { accountType } from '../accountType'
-import { findAccountWithUpdatedBalance } from 'src/services/accountServices'
+import { findAccountAndUpdatedBalance } from 'src/services/accountServices'
 
 const { connectionType: TransactionConnection } = connectionDefinitions({
   nodeType: accountType,
@@ -18,7 +18,7 @@ const connection = {
     taxId: { type: GraphQLString },
   },
   resolve: async (_: any, { taxId, ...args }: { taxId: string }) => {
-    const account = await findAccountWithUpdatedBalance(taxId)
+    const account = await findAccountAndUpdatedBalance(taxId)
 
     return connectionFromArray([account], args)
   },
