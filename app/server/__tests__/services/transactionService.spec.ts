@@ -27,8 +27,8 @@ describe('Transaction Services', () => {
 
     userMock = {
       _id: new mongoose.Types.ObjectId(),
-      firstName: 'John',
-      lastName: 'Doe',
+      firstName: 'Henrique',
+      lastName: 'Leme',
       taxId: '1234567896',
       password: 'hashed-password',
     }

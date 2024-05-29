@@ -1,0 +1,122 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  accountTransactions(
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the first n items from the list.
+    """
+    first: Int
+
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the last n items from the list.
+    """
+    last: Int
+    accountNumber: String
+  ): TransactionConnection
+}
+
+type Mutation {
+  CreateTransaction(input: CreateTransactionInput!): CreateTransactionPayload
+}
+
+"""
+A connection to a list of items.
+"""
+type TransactionConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [TransactionEdge]
+}
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+}
+
+"""
+An edge in a connection.
+"""
+type TransactionEdge {
+  """
+  The item at the end of the edge
+  """
+  node: Transaction
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+"""
+Represents a transaction
+"""
+type Transaction {
+  id: ID!
+  sender: String
+  receiver: String
+  amount: Float
+  type: TransactionType
+  description: String
+}
+
+"""
+The type of the transaction
+"""
+enum TransactionType {
+  DEPOSIT
+  TRANSFER
+}
+
+type CreateTransactionPayload {
+  clientMutationId: String
+  message: String
+}
+
+input CreateTransactionInput {
+  clientMutationId: String
+  sender: String!
+  receiver: String!
+  amount: Float!
+  type: TransactionType!
+  description: String
+}
