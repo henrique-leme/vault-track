@@ -81,6 +81,21 @@ export const verifyBalance = async (
   })
 }
 
+export async function listTransactionsByAccountNumber(accountNumber: number) {
+  const transactions = await transactionModel.find({
+    $or: [{ sender: accountNumber }, { receiver: accountNumber }],
+  })
+
+  const formattedTransactions = transactions.map((transaction) => {
+    return {
+      ...transaction.toObject(),
+      amount: parseFloat(transaction.amount.toString()),
+    }
+  })
+
+  return formattedTransactions
+}
+
 // This is only used for making possible the test of sending
 // currency to other accounts, since an account is created
 // by default with a balance of 0.
