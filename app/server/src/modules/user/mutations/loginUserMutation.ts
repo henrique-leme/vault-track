@@ -2,6 +2,7 @@ import { GraphQLNonNull, GraphQLString } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
 import { validateUserLogin } from 'src/services/userServices'
 import { generateJwt } from 'src/utils/jwt'
+import { userType } from '../userType'
 
 export type LoginUserData = {
   taxId: string
@@ -19,15 +20,20 @@ const mutation = mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async (data: LoginUserData) => {
-    await validateUserLogin(data)
+    const validUser = await validateUserLogin(data)
 
     const jwt = await generateJwt(data.taxId)
 
     return {
+      validUser,
       jwt,
     }
   },
   outputFields: {
+    validUser: {
+      type: userType,
+      resolve: async (payload) => (await payload).validUser,
+    },
     jwt: {
       type: GraphQLString,
       resolve: async (payload) => (await payload).jwt,

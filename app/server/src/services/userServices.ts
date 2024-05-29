@@ -18,13 +18,26 @@ export async function validateExistingUser(taxId: string) {
   return false
 }
 
+export async function validateUserExists(taxId: string) {
+  const existingUser = await findUser(taxId)
+
+  if (existingUser) {
+    return true
+  }
+
+  throw new UserError({
+    name: 'UserNotFound',
+    message: 'There is no user with this taxId.',
+  })
+}
+
 export async function validateUserLogin(data: LoginUserData) {
   const existingUser = await findUser(data.taxId)
 
   if (existingUser) {
     await validatePassword(data.password, existingUser.password)
 
-    return true
+    return existingUser
   }
   throw new UserError({
     name: 'UserNotFound',
@@ -65,4 +78,10 @@ export const findUser = async (taxId: string) => {
   }
 
   return false
+}
+
+export async function deleteUserByTaxId(taxId: string) {
+  await UserModel.deleteOne({ taxId: taxId })
+
+  return true
 }
