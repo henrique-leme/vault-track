@@ -10,6 +10,8 @@ import {
   transactionAccountValidations,
   verifyBalance,
 } from 'src/services/transactionServices'
+import { JwtPayload } from 'jsonwebtoken'
+import { TokenError } from 'src/utils/tokenError'
 
 export type TransactionData = {
   sender: string
@@ -46,7 +48,15 @@ const mutation = mutationWithClientMutationId({
   mutateAndGetPayload: async (data: TransactionData, ctx) => {
     const { jwt, idempotencyId } = ctx
 
-    await jwtValidation(jwt)
+    const decodedPayload = (await jwtValidation(jwt)) as JwtPayload
+
+    if (decodedPayload.taxId !== data.sender) {
+      throw new TokenError({
+        name: 'UnauthorizedToken',
+        message: 'This token is not authorized to perform this action.',
+      })
+    }
+
     const invalidTransaction = await idempotencyCheck(idempotencyId)
 
     if (invalidTransaction === false) {

@@ -3,7 +3,7 @@ import { UserModel } from 'src/models/user.model'
 
 export const userType = new GraphQLObjectType<UserModel>({
   name: 'User',
-  description: 'A user object',
+  description: 'An user object',
   fields: () => ({
     firstName: {
       type: GraphQLString,

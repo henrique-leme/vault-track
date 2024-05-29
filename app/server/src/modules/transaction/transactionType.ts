@@ -16,7 +16,7 @@ export const ETransactionEnumType = new GraphQLEnumType({
 
 export const tranasctionType = new GraphQLObjectType<TransactionModel>({
   name: 'Transaction',
-  description: 'A transaction object',
+  description: 'An transaction object',
   fields: () => ({
     sender: {
       type: GraphQLString,
