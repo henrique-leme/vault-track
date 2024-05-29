@@ -40,14 +40,14 @@ const mutation = mutationWithClientMutationId({
     await deleteUserByTaxId(data.taxId)
 
     return {
-      deletedUser: { taxId: data.taxId, accountNumber: account.accountNumber },
+      deleteUser: { taxId: data.taxId, accountNumber: account.accountNumber },
       message: 'User have been deleted successfully.',
     }
   },
   outputFields: {
-    deletedUser: {
+    deleteUser: {
       type: userType,
-      resolve: async (payload) => (await payload).deletedUser,
+      resolve: async (payload) => (await payload).deleteUser,
     },
     message: {
       type: GraphQLString,

@@ -42,7 +42,7 @@ const mutation = mutationWithClientMutationId({
     }
   },
   outputFields: {
-    updateUser: {
+    updatedUser: {
       type: userType,
       resolve: async (payload) => (await payload).updatedUser,
     },

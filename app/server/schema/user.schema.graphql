@@ -1,14 +1,8 @@
 schema {
-  query: Query
   mutation: Mutation
 }
 
-type Query {
-  user(id: ID!): User
-}
-
 type User implements Node {
-  id: ID!
   firstName: String
   lastName: String
   taxId: String
@@ -73,5 +67,5 @@ input UpdateUserInput {
 
 type UpdateUserPayload {
   clientMutationId: String
-  updatedUser: User
+  updateUser: User
 }
