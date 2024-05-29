@@ -17,7 +17,9 @@ export async function generateJwt(taxId: string) {
 
 export async function jwtValidation(jwtToken: string) {
   try {
-    const decoded = jwt.verify(jwtToken, config.JWT_KEY)
+    jwt.verify(jwtToken, config.JWT_KEY)
+
+    const decoded = jwt.decode(jwtToken)
 
     return decoded
   } catch (error) {

@@ -119,3 +119,44 @@ export async function findAccountByTaxId(taxId: string) {
     message: 'There is no user with this taxId.',
   })
 }
+
+export async function findAccountWithUpdatedBalance(taxId: string) {
+  const user = await userModel.findOne({
+    taxId: taxId,
+  })
+
+  if (user) {
+    const { accountNumber, userId, balance } = await findAccountByUserId(
+      user._id,
+    )
+    await updateBalance(accountNumber)
+
+    const account = {
+      accountNumber: accountNumber,
+      userId: userId.toString(),
+      balance: parseFloat(balance.toString()),
+    }
+
+    return account
+  }
+
+  throw new UserError({
+    name: 'UserNotFound',
+    message: 'There is no user with this taxId.',
+  })
+}
+
+export async function deleteAccount(accouuntNumber: number) {
+  const balance = await calculateBalance(accouuntNumber)
+
+  if (balance[0].balance !== 0) {
+    throw new AccountError({
+      name: 'DeleteAccountError',
+      message: 'You cant delete an account with balance.',
+    })
+  }
+
+  await accountModel.deleteOne({ accountNumber: accouuntNumber })
+
+  return true
+}
