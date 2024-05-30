@@ -15,7 +15,7 @@ import { Textarea } from './ui/textarea'
 import { useAuth } from '@/context/AuthContext'
 import { SetStateAction, useState } from 'react'
 import CustomAlertDialog from './ErrorDialog'
-import { LoginUserMutation } from './mutations/LoginUserMutation'
+import { LoginUserMutation } from './graphql/LoginUserMutation'
 
 const loginFormSchema = z.object({
   taxId: z
@@ -61,7 +61,7 @@ export function LoginForm() {
     commit({
       variables,
       onCompleted: (
-        response?: { LoginUser?: { jwt: any; validUser: any } },
+        response?: { LoginUser?: { jwt: string; validUser: any } },
         errors?: any,
       ) => {
         if (errors) {
