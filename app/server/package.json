@@ -20,6 +20,7 @@
     "koa-bodyparser": "^4.4.1",
     "koa-graphql": "^0.12.0",
     "koa-router": "^12.0.1",
+    "mongodb-memory-server": "^9.3.0",
     "mongoose": "^8.4.0",
     "short-unique-id": "^5.2.0"
   },

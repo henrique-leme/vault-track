@@ -56,6 +56,10 @@ export const calculateBalance = async (accountNumber: number) => {
     },
   ])
 
+  if (currentBalance.length === 0) {
+    return [{ balance: mongoose.Types.Decimal128.fromString('0') }]
+  }
+
   return currentBalance.map((balance: any) => ({
     ...balance,
     balance: mongoose.Types.Decimal128.fromString(balance.balance.toString()),
@@ -66,12 +70,16 @@ export const updateBalance = async (accountNumber: number) => {
   await findAccountByAccountNumber(accountNumber)
 
   const currentBalance = await calculateBalance(accountNumber)
+
+  const balanceToUpdate =
+    currentBalance[0]?.balance || mongoose.Types.Decimal128.fromString('0')
+
   const account = await accountModel.findOneAndUpdate(
     {
       accountNumber: accountNumber,
     },
     {
-      balance: currentBalance[0].balance,
+      balance: balanceToUpdate,
     },
     { new: true },
   )
@@ -149,10 +157,16 @@ export async function findAccountAndUpdatedBalance(taxId: string) {
 
 export async function deleteAccount(accountNumber: number) {
   const balance = await calculateBalance(accountNumber)
-  if (balance.length > 0 && balance[0].balance.toString() !== '0.0') {
+
+  const accountBalance =
+    balance.length > 0
+      ? balance[0].balance
+      : mongoose.Types.Decimal128.fromString('0.0')
+
+  if (accountBalance.toString() !== '0') {
     throw new AccountError({
       name: 'DeleteAccountError',
-      message: 'You cant delete an account with balance.',
+      message: "You can't delete an account with balance.",
     })
   }
 
