@@ -18,6 +18,9 @@ describe('Account Services', () => {
   let userMock: any
 
   beforeEach(async () => {
+    await userModel.deleteMany({})
+    await accountModel.deleteMany({})
+    await transactionModel.deleteMany({})
     userMock = {
       _id: new mongoose.Types.ObjectId(),
       firstName: 'Henrique',
@@ -31,9 +34,6 @@ describe('Account Services', () => {
 
   afterEach(async () => {
     jest.clearAllMocks()
-    await userModel.deleteMany({})
-    await accountModel.deleteMany({})
-    await transactionModel.deleteMany({})
   })
 
   describe('createAccount', () => {
