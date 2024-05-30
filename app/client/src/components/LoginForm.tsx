@@ -1,3 +1,4 @@
+import { useMutation } from 'react-relay'
 import {
   Form,
   FormControl,
@@ -11,20 +12,24 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import { Textarea } from './ui/textarea'
+import { useAuth } from '@/context/AuthContext'
+import { SetStateAction, useState } from 'react'
+import CustomAlertDialog from './ErrorDialog'
+import { LoginUserMutation } from './mutations/LoginUserMutation'
 
 const loginFormSchema = z.object({
   taxId: z
     .string({
-      required_error: 'tax identification is required',
+      required_error: 'Tax identification is required',
     })
     .refine((doc) => {
       const replacedDoc = doc.replace(/\D/g, '')
       return replacedDoc.length === 11 || replacedDoc.length === 14
-    }, 'tax identification must be 11 characters for CPF or 14 characters for CNPJ.')
+    }, 'Tax identification must be 11 characters for CPF ou 14 characters for CNPJ.')
     .refine((doc) => {
       const replacedDoc = doc.replace(/\D/g, '')
       return /^[0-9]+$/.test(replacedDoc)
-    }, 'tax identification must contain only numbers.'),
+    }, 'Tax identification must contain only numbers.'),
   password: z
     .string({
       required_error: 'Password is required.',
@@ -34,6 +39,10 @@ const loginFormSchema = z.object({
 
 export function LoginForm() {
   const navigate = useNavigate()
+  const { login } = useAuth()
+  const [commit, isInFlight] = useMutation(LoginUserMutation)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [showDialog, setShowDialog] = useState(false)
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -43,14 +52,42 @@ export function LoginForm() {
   })
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    console.log(values)
-    //Autenticar
-    navigate('/home')
-    // }
+    const variables = {
+      input: {
+        taxId: values.taxId,
+        password: values.password,
+      },
+    }
+    commit({
+      variables,
+      onCompleted: (
+        response?: { LoginUser?: { jwt: any; validUser: any } },
+        errors?: any,
+      ) => {
+        if (errors) {
+          setErrorMessage(errors[0].message)
+          setShowDialog(true)
+          return
+        }
+        if (response?.LoginUser) {
+          const { jwt, validUser } = response.LoginUser
+          login(jwt, validUser)
+          navigate('/home')
+        } else {
+          setErrorMessage('Unknown error occurred')
+          setShowDialog(true)
+        }
+      },
+      onError: (err: { message: SetStateAction<string> }) => {
+        setErrorMessage(err.message)
+        setShowDialog(true)
+      },
+    })
   }
 
   return (
     <>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -77,11 +114,19 @@ export function LoginForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="buttonForm">
+          <Button type="submit" className="buttonForm" disabled={isInFlight}>
             Submit
           </Button>
         </form>
       </Form>
+      {showDialog && (
+        <CustomAlertDialog
+          open={showDialog}
+          onClose={() => setShowDialog(false)}
+          message={errorMessage}
+          type="error"
+        />
+      )}
     </>
   )
 }

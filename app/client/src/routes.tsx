@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
 import HomePage from './pages/HomePage'
+import { RequireAuth } from './middleware'
 
 export const routes: ReturnType<typeof createBrowserRouter> =
   createBrowserRouter([
@@ -15,7 +16,11 @@ export const routes: ReturnType<typeof createBrowserRouter> =
     },
     {
       path: '/home',
-      element: <HomePage />,
+      element: (
+        <RequireAuth>
+          <HomePage />
+        </RequireAuth>
+      ),
     },
     // {
     //   path: '/transaction',
