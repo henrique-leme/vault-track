@@ -1,0 +1,156 @@
+# Schema for Account
+type Account {
+  accountNumber: String
+  userId: String
+  balance: String
+}
+
+# Connection definitions for Account
+type AccountEdge {
+  node: Account
+  cursor: String
+}
+
+type PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor: String
+  endCursor: String
+}
+
+type AccountConnection {
+  edges: [AccountEdge]
+  pageInfo: PageInfo
+}
+
+# Schema for Transaction
+enum TransactionType {
+  DEPOSIT
+  TRANSFER
+}
+
+input CreateTransactionInput {
+  sender: String!
+  receiver: String!
+  amount: Float!
+  type: TransactionType!
+  description: String
+}
+
+type CreateTransactionPayload {
+  message: String
+}
+
+type Transaction {
+  sender: String
+  receiver: String
+  amount: Float
+  type: TransactionType
+  description: String
+}
+
+# Connection definitions for Transaction
+type TransactionEdge {
+  node: Transaction
+  cursor: String
+}
+
+type TransactionConnection {
+  edges: [TransactionEdge]
+  pageInfo: PageInfo
+}
+
+# Schema for User
+type User implements Node {
+  firstName: String
+  lastName: String
+  taxId: String
+}
+
+interface Node {
+  id: ID!
+}
+
+# Mutations for User
+type Mutation {
+  RegisterUser(input: RegisterUserInput!): RegisterUserPayload
+  LoginUser(input: LoginUserInput!): LoginUserPayload
+  DeleteUser(input: DeleteUserInput!): DeleteUserPayload
+  UpdateUser(input: UpdateUserInput!): UpdateUserPayload
+  CreateTransaction(input: CreateTransactionInput!): CreateTransactionPayload
+}
+
+input RegisterUserInput {
+  clientMutationId: String
+  firstName: String!
+  lastName: String
+  taxId: String!
+  password: String!
+}
+
+type RegisterUserPayload {
+  clientMutationId: String
+  user: User
+  jwt: String
+}
+
+input LoginUserInput {
+  clientMutationId: String
+  taxId: String!
+  password: String!
+}
+
+type LoginUserPayload {
+  clientMutationId: String
+  validUser: User
+  jwt: String
+}
+
+input DeleteUserInput {
+  clientMutationId: String
+  jwt: String!
+  taxId: String!
+}
+
+type DeleteUserPayload {
+  clientMutationId: String
+  deletedUser: User
+  message: String
+}
+
+input UpdateUserInput {
+  clientMutationId: String
+  password: String!
+  firstName: String
+  lastName: String
+  newPassword: String
+}
+
+type UpdateUserPayload {
+  clientMutationId: String
+  updateUser: User
+}
+
+# Query definitions
+type Query {
+  accountWithUpdatedBalance(
+    taxId: String!
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): AccountConnection
+  AccountTransactions(
+    accountNumber: String!
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): TransactionConnection
+}
+
+# Root schema definition
+schema {
+  query: Query
+  mutation: Mutation
+}
