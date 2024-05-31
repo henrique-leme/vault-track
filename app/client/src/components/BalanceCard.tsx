@@ -44,7 +44,7 @@ const BalanceCard = () => {
           variant="balanceCard"
           className="balance-card-button"
           onClick={() =>
-            navigate(`/transactions${idempotentRouteId(account.uniqueId)}`)
+            navigate(`/transaction${idempotentRouteId(account.uniqueId)}`)
           }
         >
           Transaction
