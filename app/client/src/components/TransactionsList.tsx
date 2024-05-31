@@ -7,26 +7,38 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table'
-import { TransactionsListQuery } from './graphql/TransactionsListQuery'
 import { useAuth } from '@/context/AuthContext'
+import { TransactionsListQuery as TransactionList } from './graphql/TransactionsListQuery'
 import { AccountWithBalance } from './graphql/AccountWithBalance'
+import { AccountWithBalanceQuery } from './graphql/__generated__/AccountWithBalanceQuery.graphql'
+import { TransactionsListQuery } from './graphql/__generated__/TransactionsListQuery.graphql'
 
 const TransactionsList = () => {
   const { authState } = useAuth()
 
-  const accountData: any = useLazyLoadQuery(AccountWithBalance, {
-    taxId: authState?.user?.taxId,
-  })
+  const accountData = useLazyLoadQuery<AccountWithBalanceQuery>(
+    AccountWithBalance,
+    {
+      taxId: authState?.user?.taxId || '',
+    },
+  )
 
-  const account = accountData.accountWithUpdatedBalance.edges[0]?.node
+  const account = accountData?.accountWithUpdatedBalance?.edges?.[0]?.node
 
-  const transactionsData = useLazyLoadQuery(TransactionsListQuery, {
-    accountNumber: account.accountNumber,
-  }) as { AccountTransactions: { edges: { node: any }[] } }
+  const transactionsData = useLazyLoadQuery<TransactionsListQuery>(
+    TransactionList,
+    {
+      accountNumber: account?.accountNumber || '',
+    },
+  )
+
+  if (!account || !transactionsData) {
+    return <div>Loading...</div>
+  }
 
   const transactions =
     transactionsData?.AccountTransactions?.edges
-      ?.map((edge: { node: any }) => edge.node)
+      ?.map((edge) => edge?.node)
       .reverse() || []
 
   return (
@@ -45,11 +57,11 @@ const TransactionsList = () => {
           {transactions.length > 0 ? (
             transactions.map((transaction, index) => (
               <TableRow key={index}>
-                <TableCell>{transaction.type}</TableCell>
-                <TableCell>${transaction.amount}</TableCell>
-                <TableCell>{transaction.receiver}</TableCell>
-                <TableCell>{transaction.sender}</TableCell>
-                <TableCell>{transaction.description}</TableCell>
+                <TableCell>{transaction?.type}</TableCell>
+                <TableCell>${transaction?.amount}</TableCell>
+                <TableCell>{transaction?.receiver}</TableCell>
+                <TableCell>{transaction?.sender}</TableCell>
+                <TableCell>{transaction?.description}</TableCell>
               </TableRow>
             ))
           ) : (

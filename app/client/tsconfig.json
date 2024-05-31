@@ -10,6 +10,7 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "jsx": "react-jsx",
+
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
