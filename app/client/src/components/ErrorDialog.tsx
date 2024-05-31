@@ -1,5 +1,4 @@
 import {
-  AlertDialogProps,
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
@@ -8,12 +7,7 @@ import {
   AlertDialogAction,
 } from '@radix-ui/react-alert-dialog'
 import { AlertDialogHeader, AlertDialogFooter } from './ui/alert-dialog'
-
-interface CustomAlertDialogProps extends AlertDialogProps {
-  message: string
-  type: 'error' | 'warning' | 'info'
-  onClose: () => void
-}
+import { CustomAlertDialogProps } from '@/lib/interfaces'
 
 const CustomAlertDialog = ({
   message,
@@ -23,23 +17,32 @@ const CustomAlertDialog = ({
 }: CustomAlertDialogProps) => {
   return (
     <AlertDialog {...props}>
-      <AlertDialogTrigger asChild>
-        <button style={{ display: 'none' }}>Open</button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            {type === 'error'
-              ? 'Error'
-              : type === 'warning'
-                ? 'Warning'
-                : 'Info'}
-          </AlertDialogTitle>
-          <AlertDialogDescription>{message}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogAction onClick={onClose}>Close</AlertDialogAction>
-        </AlertDialogFooter>
+      <AlertDialogTrigger asChild></AlertDialogTrigger>
+      <AlertDialogContent className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white rounded-lg shadow-lg p-6 sm:max-w-[425px]">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {type === 'error'
+                ? 'Error'
+                : type === 'warning'
+                  ? 'Warning'
+                  : 'Info'}
+            </AlertDialogTitle>
+            <AlertDialogDescription>{message}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <span className="text-right">
+                {/* Additional content or styling can go here */}
+              </span>
+            </div>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogAction className="flex" onClick={onClose}>
+              Close
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </div>
       </AlertDialogContent>
     </AlertDialog>
   )
