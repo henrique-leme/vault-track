@@ -7,9 +7,11 @@ import { createRelayEnvironment } from '../relay/RelayEnvironment'
 
 function AppWithProviders() {
   const { authState } = useAuth()
+
   const relayEnvironment = useMemo(
-    () => createRelayEnvironment(authState.token),
-    [authState.token],
+    () =>
+      createRelayEnvironment(authState.token, authState.idempotencyId ?? ''),
+    [authState.token, authState.idempotencyId],
   )
 
   return (

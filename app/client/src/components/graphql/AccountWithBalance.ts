@@ -5,8 +5,9 @@ export const AccountWithBalance = graphql`
     accountWithUpdatedBalance(taxId: $taxId) {
       edges {
         node {
-          balance
+          uniqueId
           accountNumber
+          balance
         }
       }
     }

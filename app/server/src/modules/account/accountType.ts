@@ -5,6 +5,10 @@ export const accountType = new GraphQLObjectType<AccountModel>({
   name: 'Account',
   description: 'An account object',
   fields: () => ({
+    uniqueId: {
+      type: GraphQLString,
+      description: 'The uniqueId of the account',
+    },
     accountNumber: {
       type: GraphQLString,
       description: 'Account number used for transactions',

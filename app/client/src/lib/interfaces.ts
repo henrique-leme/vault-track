@@ -10,12 +10,14 @@ export interface User {
 export interface AuthState {
   token: string
   user: User | null
+  idempotencyId: string | null
 }
 
 export interface AuthContextType {
   authState: AuthState
   login: (token: string, user: User) => void
   logout: () => void
+  setIdempotencyId: (idempotencyId: string) => void
 }
 
 export interface AuthProviderProps {

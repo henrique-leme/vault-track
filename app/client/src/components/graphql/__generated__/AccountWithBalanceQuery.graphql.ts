@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c70091f6a732bd2af6504c643f38d7eb>>
+ * @generated SignedSource<<c9f0d235439cb974da0ccba87a03b4df>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,6 +18,7 @@ export type AccountWithBalanceQuery$data = {
       readonly node: {
         readonly accountNumber: string | null | undefined;
         readonly balance: string | null | undefined;
+        readonly uniqueId: string | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   } | null | undefined;
@@ -70,7 +71,7 @@ v1 = [
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "balance",
+                "name": "uniqueId",
                 "storageKey": null
               },
               {
@@ -78,6 +79,13 @@ v1 = [
                 "args": null,
                 "kind": "ScalarField",
                 "name": "accountNumber",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "balance",
                 "storageKey": null
               }
             ],
@@ -108,16 +116,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "74f0ac51c57eecd48d7a4906a43bc26e",
+    "cacheID": "242bb018a31b35e58fe94de8e6aa4915",
     "id": null,
     "metadata": {},
     "name": "AccountWithBalanceQuery",
     "operationKind": "query",
-    "text": "query AccountWithBalanceQuery(\n  $taxId: String!\n) {\n  accountWithUpdatedBalance(taxId: $taxId) {\n    edges {\n      node {\n        balance\n        accountNumber\n      }\n    }\n  }\n}\n"
+    "text": "query AccountWithBalanceQuery(\n  $taxId: String!\n) {\n  accountWithUpdatedBalance(taxId: $taxId) {\n    edges {\n      node {\n        uniqueId\n        accountNumber\n        balance\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "755493e78a7d685b9e944153b13275f3";
+(node as any).hash = "efba6d87f5e3b6c4ddc74123e0987406";
 
 export default node;

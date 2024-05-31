@@ -83,6 +83,9 @@ importers:
       shadcn-ui:
         specifier: ^0.8.0
         version: 0.8.0(typescript@5.4.5)
+      short-unique-id:
+        specifier: ^5.2.0
+        version: 5.2.0
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0

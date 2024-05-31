@@ -5,9 +5,11 @@ import { MenuIcon, XIcon } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 
 const Header = () => {
+  const { authState } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const { logout } = useAuth()
   const navigate = useNavigate()
+  const user = authState.user
 
   const handleNavigation = (path: To) => {
     setIsOpen(false)
@@ -24,7 +26,9 @@ const Header = () => {
       <div className="header-container">
         <div className="header-content">
           <div className="flex items-center">
-            <h1 className="header-title">MyApp</h1>
+            <h1 className="header-title">
+              Welcome to VaultTrack, {user?.firstName} {user?.lastName}
+            </h1>
           </div>
           <div className="-mr-2 flex md:hidden">
             <Button
@@ -45,7 +49,7 @@ const Header = () => {
               <a
                 href=""
                 className="menu-item"
-                onClick={() => handleNavigation('/home')}
+                onClick={() => navigate('/home')}
               >
                 Home
               </a>

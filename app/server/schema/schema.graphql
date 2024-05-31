@@ -1,5 +1,6 @@
 # Schema for Account
 type Account {
+  uniqueId: String
   accountNumber: String
   userId: String
   balance: String

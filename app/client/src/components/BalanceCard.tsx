@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { useLazyLoadQuery } from 'react-relay'
 import { AccountWithBalance } from './graphql/AccountWithBalance'
 import { useNavigate } from 'react-router-dom'
+import { idempotentRouteId } from '@/lib/idempotencyId'
 
 const BalanceCard = () => {
   const { authState } = useAuth()
@@ -33,14 +34,18 @@ const BalanceCard = () => {
         <Button
           variant="balanceCard"
           className="balance-card-button"
-          onClick={() => navigate('/deposit')}
+          onClick={() =>
+            navigate(`/deposit${idempotentRouteId(account.uniqueId)}`)
+          }
         >
           Deposit
         </Button>
         <Button
           variant="balanceCard"
           className="balance-card-button"
-          onClick={() => navigate('/transaction')}
+          onClick={() =>
+            navigate(`/transactions${idempotentRouteId(account.uniqueId)}`)
+          }
         >
           Transaction
         </Button>

@@ -12,18 +12,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authState, setAuthState] = useState<AuthState>({
     token: '',
     user: null,
+    idempotencyId: null,
   })
 
   const login = (token: string, user: User) => {
-    setAuthState({ token, user })
+    setAuthState({ token, user, idempotencyId: authState.idempotencyId })
   }
 
   const logout = () => {
-    setAuthState({ token: '', user: null })
+    setAuthState({ token: '', user: null, idempotencyId: null })
+  }
+
+  const setIdempotencyId = (idempotencyId: string) => {
+    setAuthState((prevState) => ({
+      ...prevState,
+      idempotencyId,
+    }))
   }
 
   return (
-    <AuthContext.Provider value={{ authState, login, logout }}>
+    <AuthContext.Provider
+      value={{ authState, login, logout, setIdempotencyId }}
+    >
       {children}
     </AuthContext.Provider>
   )

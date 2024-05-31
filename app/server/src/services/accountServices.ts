@@ -137,10 +137,11 @@ export async function findAccountAndUpdatedBalance(taxId: string) {
   })
 
   if (user) {
-    const { accountNumber, userId } = await findAccountByUserId(user._id)
+    const { _id, accountNumber, userId } = await findAccountByUserId(user._id)
     const balance = await updateBalance(accountNumber)
 
     const account = {
+      uniqueId: _id,
       accountNumber: accountNumber,
       userId: userId.toString(),
       balance: parseFloat(balance!.toString()),

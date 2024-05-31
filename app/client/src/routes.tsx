@@ -4,6 +4,7 @@ import RegisterPage from '@/pages/RegisterPage'
 import HomePage from './pages/HomePage'
 import { RequireAuth } from './middleware'
 import TransactionPage from './pages/TransactionPage'
+import DepositPage from './pages/DepositPage'
 
 export const routes: ReturnType<typeof createBrowserRouter> =
   createBrowserRouter([
@@ -24,15 +25,19 @@ export const routes: ReturnType<typeof createBrowserRouter> =
       ),
     },
     {
-      path: '/transaction',
+      path: '/transaction/:idempotencyId',
       element: (
         <RequireAuth>
           <TransactionPage />
         </RequireAuth>
       ),
     },
-    // {
-    //   path: '/deposit',
-    //   element: <RDepositPage />,
-    // },
+    {
+      path: '/deposit/:idempotencyId',
+      element: (
+        <RequireAuth>
+          <DepositPage />
+        </RequireAuth>
+      ),
+    },
   ])
