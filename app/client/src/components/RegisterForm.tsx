@@ -27,7 +27,7 @@ const registerFormSchema = z
       })
       .refine((doc) => {
         const replacedDoc = doc.replace(/\D/g, '')
-        return replacedDoc.length === 11 || replacedDoc.length === 14
+        return replacedDoc.length === 11 || 14
       }, 'Tax identification must be 11 characters for CPF or 14 characters for CNPJ.')
       .refine((doc) => {
         const replacedDoc = doc.replace(/\D/g, '')
@@ -177,9 +177,11 @@ export function RegisterForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="buttonForm" disabled={isInFlight}>
-            Register
-          </Button>
+          <div className="form-button-container">
+            <Button type="submit" variant="formButton" disabled={isInFlight}>
+              Register
+            </Button>
+          </div>
         </form>
       </Form>
       {showDialog && (
