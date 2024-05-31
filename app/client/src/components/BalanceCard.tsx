@@ -5,15 +5,16 @@ import { useLazyLoadQuery } from 'react-relay'
 import { AccountWithBalance } from './graphql/AccountWithBalance'
 import { useNavigate } from 'react-router-dom'
 import { idempotentRouteId } from '@/lib/idempotencyId'
+import { AccountWithBalanceQuery } from './graphql/__generated__/AccountWithBalanceQuery.graphql'
 
 const BalanceCard = () => {
   const { authState } = useAuth()
-  const data: any = useLazyLoadQuery(AccountWithBalance, {
-    taxId: authState?.user?.taxId,
+  const data = useLazyLoadQuery<AccountWithBalanceQuery>(AccountWithBalance, {
+    taxId: authState?.user?.taxId ?? '',
   })
   const navigate = useNavigate()
 
-  const account = data.accountWithUpdatedBalance.edges[0]?.node
+  const account = data?.accountWithUpdatedBalance?.edges?.[0]?.node
 
   return (
     <div className="balance-card">
@@ -36,7 +37,8 @@ const BalanceCard = () => {
             variant="balanceCard"
             className="balance-card-button"
             onClick={() =>
-              navigate(`/deposit${idempotentRouteId(account.uniqueId)}`)
+              account &&
+              navigate(`/deposit${idempotentRouteId(account.uniqueId ?? '')}`)
             }
           >
             Deposit
@@ -45,7 +47,10 @@ const BalanceCard = () => {
             variant="balanceCard"
             className="balance-card-button"
             onClick={() =>
-              navigate(`/transaction${idempotentRouteId(account.uniqueId)}`)
+              account &&
+              navigate(
+                `/transaction${idempotentRouteId(account.uniqueId ?? '')}`,
+              )
             }
           >
             Transaction

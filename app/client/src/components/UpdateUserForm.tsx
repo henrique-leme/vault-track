@@ -24,24 +24,24 @@ const profileSchema = z
     taxId: z.string(),
     firstName: z.string().min(1, 'First Name is required'),
     lastName: z.string().min(1, 'Last Name is required'),
-    password: z.string().min(6, 'Password must be at least 6 characters long'),
+    password: z.string().min(8, 'Password must be at least 8 characters long'),
     newPassword: z.string().optional(),
     confirmNewPassword: z.string().optional(),
   })
   .refine(
     (data) => !data.newPassword || data.newPassword === data.confirmNewPassword,
     {
-      message: 'New passwords do not match',
+      message: 'New passwords did not match',
       path: ['confirmNewPassword'],
     },
   )
 
 const passwordSchema = z
   .object({
-    password: z.string().min(6, 'Password must be at least 6 characters long'),
+    password: z.string().min(8, 'Password must be at least 8 characters long'),
     confirmPassword: z
       .string()
-      .min(6, 'Password must be at least 6 characters long'),
+      .min(8, 'Password must be at least 8 characters long'),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',

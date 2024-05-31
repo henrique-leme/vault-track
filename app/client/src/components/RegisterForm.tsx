@@ -17,6 +17,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import CustomAlertDialog from './CustomAlertDialog'
+import { User } from '@/lib/interfaces'
 
 const registerFormSchema = z
   .object({
@@ -96,7 +97,7 @@ export function RegisterForm() {
       variables,
       onCompleted: (
         response?: {
-          RegisterUser?: { jwt: string; user: any }
+          RegisterUser?: { jwt: string; user: User }
         },
         errors?: any,
       ) => {

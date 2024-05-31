@@ -1,4 +1,3 @@
-// src/components/CustomAlertDialog.stories.tsx
 import { Meta, StoryObj } from '@storybook/react'
 import CustomAlertDialog from '@/components/CustomAlertDialog'
 

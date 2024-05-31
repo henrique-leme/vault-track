@@ -1,4 +1,3 @@
-// src/components/DepositForm.stories.tsx
 import { Meta, StoryObj } from '@storybook/react'
 import { DepositForm } from '@/components/DepositForm'
 import { RelayEnvironmentProvider } from 'react-relay/hooks'
@@ -6,7 +5,6 @@ import { createMockEnvironment, MockPayloadGenerator } from 'relay-test-utils'
 import { AuthProvider } from '@/context/AuthContext'
 import { BrowserRouter } from 'react-router-dom'
 
-// Configurar o mock do ambiente Relay
 const mockEnvironment = createMockEnvironment()
 
 mockEnvironment.mock.queueOperationResolver((operation) =>

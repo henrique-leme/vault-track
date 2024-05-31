@@ -17,6 +17,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from './ui/input'
 import CustomAlertDialog from './CustomAlertDialog'
+import { User } from '@/lib/interfaces'
 
 const loginFormSchema = z.object({
   taxId: z
@@ -74,7 +75,7 @@ export function LoginForm() {
     commit({
       variables,
       onCompleted: (
-        response?: { LoginUser?: { jwt: any; validUser: any } },
+        response?: { LoginUser?: { jwt: string; validUser: User } },
         errors?: any,
       ) => {
         if (errors) {
