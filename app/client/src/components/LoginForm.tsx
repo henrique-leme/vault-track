@@ -11,11 +11,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
-import { Textarea } from './ui/textarea'
 import { useAuth } from '@/context/AuthContext'
 import { SetStateAction, useState } from 'react'
 import CustomAlertDialog from './ErrorDialog'
 import { LoginUserMutation } from './graphql/LoginUserMutation'
+import { Input } from './ui/input'
 
 const loginFormSchema = z.object({
   taxId: z
@@ -61,7 +61,7 @@ export function LoginForm() {
     commit({
       variables,
       onCompleted: (
-        response?: { LoginUser?: { jwt: string; validUser: any } },
+        response?: { LoginUser?: { jwt: any; validUser: any } },
         errors?: any,
       ) => {
         if (errors) {
@@ -96,7 +96,7 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Textarea placeholder="Tax Identification..." {...field} />
+                  <Input placeholder="Tax Identification..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,15 +108,17 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Textarea placeholder="Password..." {...field} />
+                  <Input placeholder="Password..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit" className="buttonForm" disabled={isInFlight}>
-            Submit
-          </Button>
+          <div className="form-button-container">
+            <Button type="submit" variant="formButton" disabled={isInFlight}>
+              Submit
+            </Button>
+          </div>
         </form>
       </Form>
       {showDialog && (
