@@ -111,7 +111,8 @@
   }
 
   .form-card {
-    @apply w-full max-w-md p-6 m-4 bg-white rounded-xl shadow-lg;
+    @apply w-full max-w-xl p-8 m-8 shadow-lg rounded-xl bg-white border border-gray-300 relative;
+    min-width: var(--min-width);
   }
 
   h1 {

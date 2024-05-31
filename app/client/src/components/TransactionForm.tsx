@@ -41,9 +41,7 @@ export function TransactionForm() {
 
   async function onSubmit(values: z.infer<typeof transactionFormSchema>) {
     try {
-      // Aqui você pode adicionar a lógica de submissão, por exemplo, chamar uma API
       console.log('Transaction values:', values)
-      // Após a submissão, você pode redirecionar ou exibir uma mensagem de sucesso
     } catch (error) {
       setErrorMessage('An error occurred while processing the transaction')
       setShowDialog(true)

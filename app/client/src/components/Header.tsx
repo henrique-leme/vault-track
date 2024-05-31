@@ -1,9 +1,23 @@
 import { useState } from 'react'
+import { To, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { MenuIcon, XIcon } from 'lucide-react'
+import { useAuth } from '@/context/AuthContext'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleNavigation = (path: To) => {
+    setIsOpen(false)
+    navigate(path)
+  }
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
 
   return (
     <header className="header">
@@ -28,16 +42,28 @@ const Header = () => {
           </div>
           <div className="menu-items-desktop">
             <div className="menu-items-baseline">
-              <a href="#" className="menu-item">
+              <a
+                href=""
+                className="menu-item"
+                onClick={() => handleNavigation('/home')}
+              >
                 Home
               </a>
-              <a href="#" className="menu-item">
+              <a
+                href=""
+                className="menu-item"
+                onClick={() => handleNavigation('/transactions')}
+              >
                 Transactions
               </a>
-              <a href="#" className="menu-item">
+              <a
+                href=""
+                className="menu-item"
+                onClick={() => handleNavigation('/profile')}
+              >
                 Profile
               </a>
-              <a href="#" className="menu-item">
+              <a href="" className="menu-item" onClick={handleLogout}>
                 Logout
               </a>
             </div>
@@ -48,16 +74,28 @@ const Header = () => {
       {isOpen && (
         <div className="menu-items-mobile">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a href="#" className="menu-item">
+            <a
+              href=""
+              className="menu-item"
+              onClick={() => handleNavigation('/home')}
+            >
               Home
             </a>
-            <a href="#" className="menu-item">
+            <a
+              href=""
+              className="menu-item"
+              onClick={() => handleNavigation('/transactions')}
+            >
               Transactions
             </a>
-            <a href="#" className="menu-item">
+            <a
+              href=""
+              className="menu-item"
+              onClick={() => handleNavigation('/profile')}
+            >
               Profile
             </a>
-            <a href="#" className="menu-item">
+            <a href="" className="menu-item" onClick={handleLogout}>
               Logout
             </a>
           </div>

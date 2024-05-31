@@ -23,7 +23,7 @@ const BalanceCard = () => {
         {account ? (
           <>
             <div>Account Number: {account.accountNumber}</div>
-            <div>Balance: {account.balance}</div>
+            <div>Balance: ${account.balance}</div>
           </>
         ) : (
           <div>No account data available</div>
