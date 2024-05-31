@@ -1,126 +1,182 @@
+/* Tailwind CSS imports */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  font-family: 'Roboto', Arial, sans-serif;
-
-  --primary-main: #05be71;
-  --primary-main-hover: #049e5e;
-  --primary-contrastText: #fff;
-
-  --secondary-main: #4a36bd;
-  --secondary-contrastText: #fff;
-
-  --background-color: #f0f0f0;
-
-  --min-width: 18.75rem;
-
-  --transaction-button-color: #4caf50;
-  --transaction-button-hover-color: #45a049;
-  --deposit-button-color: #008cba;
-  --deposit-button-hover-color: #007bb5;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+* {
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
-}
-
-.balanceCard {
-  width: 100%;
-  min-width: var(--min-width);
-  padding: 1.25rem;
-  margin: 1.25rem auto;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  border-radius: 0.5rem;
-  background-color: #fff;
-}
-
-.balanceCardHeader {
-  margin-bottom: 1rem;
-}
-
-.balanceCardTitle {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.balanceCardContent {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
-.balanceCardFooter {
-  display: flex;
-  justify-content: space-between;
-}
-
-input,
-textarea {
-  width: 100%;
-  min-width: var(--min-width);
-  padding: 0.75rem;
-  margin: 0.5rem 0;
   box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-  resize: none;
 }
 
-button {
-  width: 100%;
-  padding: 0.875rem 1.25rem;
-  margin: 0.5rem 0;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-size: 1rem;
-}
+@layer base {
+  :root {
+    --primary-main: #05be71;
+    --primary-main-hover: #049e5e;
+    --primary-contrastText: #fff;
 
-.buttonForm {
-  background-color: var(--primary-main);
-  color: var(--primary-contrastText);
-}
+    --secondary-main: #4a36bd;
+    --secondary-contrastText: #fff;
 
-.buttonForm:hover {
-  background-color: var(--primary-main-hover);
-}
+    --background-color: #f0f0f0;
 
-.balanceCardFooter {
-  padding-top: 4rem;
-}
+    --min-width: 18.75rem;
 
-.balanceCardButton {
-  background-color: var(--transaction-button-color);
-  color: white;
-  padding: 0.625rem 1.25rem;
-  flex: 1;
-  margin-right: 0.625rem;
-}
+    --transaction-button-color: #4caf50;
+    --transaction-button-hover-color: #45a049;
+    --deposit-button-color: #008cba;
+    --deposit-button-hover-color: #007bb5;
+  }
 
-.balanceCardButton:hover {
-  background-color: var(--transaction-button-hover-color);
+  body {
+    @apply m-0 p-0 bg-[var(--background-color)];
+  }
+
+  .app-container {
+    @apply flex flex-col min-h-screen;
+  }
+
+  header {
+    @apply w-full bg-white border-b border-gray-200;
+  }
+
+  .header-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .header-content {
+    @apply flex justify-between items-center h-16;
+  }
+
+  .header-title {
+    @apply text-xl font-bold;
+  }
+
+  .menu-button {
+    @apply inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500;
+  }
+
+  .menu-items-desktop {
+    @apply hidden md:block;
+  }
+
+  .menu-items-mobile {
+    @apply md:hidden;
+  }
+
+  .menu-item {
+    @apply text-gray-900 hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium;
+  }
+
+  .menu-items-baseline {
+    @apply ml-10 flex items-baseline space-x-4;
+  }
+
+  .content-container {
+    @apply flex-grow flex justify-center items-center;
+  }
+
+  .balance-card {
+    @apply w-full max-w-xl p-8 m-8 shadow-lg rounded-xl bg-white border border-gray-300;
+    min-width: var(--min-width);
+  }
+
+  .balance-card-header {
+    @apply mb-4;
+  }
+
+  .balance-card-title {
+    @apply text-2xl font-bold mb-4;
+  }
+
+  .balance-card-content {
+    @apply text-lg text-gray-700 mb-6;
+  }
+
+  .balance-card-footer {
+    @apply flex justify-between;
+  }
+
+  .balance-card-button {
+    @apply bg-[var(--primary-main)] text-white py-2 px-4 rounded-lg mx-2;
+  }
+
+  .balance-card-button:hover {
+    @apply bg-[var(--primary-main-hover)];
+  }
+
+  .container {
+    @apply flex flex-col items-center justify-center min-h-screen;
+  }
+
+  .form-card {
+    @apply w-full max-w-md p-6 m-4 bg-white rounded-xl shadow-lg;
+  }
+
+  h1 {
+    @apply text-2xl font-bold text-gray-800 mb-4;
+  }
+
+  p {
+    @apply text-gray-700 mb-4;
+  }
+
+  input,
+  textarea {
+    @apply w-full p-3 mb-4 box-border border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary-main)];
+    min-width: var(--min-width);
+  }
+
+  .form-button-container {
+    @apply flex flex-col items-center mt-4;
+  }
+
+  button {
+    @apply w-full py-3.5 px-5 mb-4 border-0 rounded-lg cursor-pointer text-base bg-[var(--primary-main)] text-white;
+  }
+
+  button:hover {
+    @apply bg-[var(--primary-main-hover)];
+  }
+
+  .button-form {
+    @apply bg-green-20 bg-opacity-0 text-black-2;
+  }
+
+  .button-form:hover {
+    @apply bg-[var(--primary-main-hover)];
+  }
+
+  .link-container {
+    @apply flex justify-center;
+  }
+
+  .link-text {
+    @apply text-gray-700 mt-2;
+  }
+
+  .spinner-border {
+    border-top-color: transparent;
+  }
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 37.5rem) {
-  .balanceCard {
-    width: 90%;
-    padding: 0.9375rem;
-    margin: 0.625rem auto;
+  .balance-card {
+    @apply w-[90%] p-4 m-4 mx-auto;
   }
 
-  .balanceCardFooter {
-    flex-direction: column;
+  .balance-card-footer {
+    @apply flex-col;
+  }
+
+  .balance-card-button {
+    @apply my-2;
   }
 
   .transaction-button,
   .deposit-button {
-    margin: 0.625rem 0;
+    @apply m-2.5;
   }
 }
