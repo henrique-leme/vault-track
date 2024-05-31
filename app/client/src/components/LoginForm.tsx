@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from './ui/input'
-import CustomAlertDialog from './ErrorDialog'
+import CustomAlertDialog from './CustomAlertDialog'
 
 const loginFormSchema = z.object({
   taxId: z

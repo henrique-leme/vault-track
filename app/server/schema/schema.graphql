@@ -109,7 +109,6 @@ type LoginUserPayload {
 
 input DeleteUserInput {
   clientMutationId: String
-  jwt: String!
   taxId: String!
 }
 
@@ -129,7 +128,7 @@ input UpdateUserInput {
 
 type UpdateUserPayload {
   clientMutationId: String
-  updateUser: User
+  updatedUser: User
 }
 
 # Query definitions

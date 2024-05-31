@@ -16,41 +16,43 @@ const BalanceCard = () => {
   const account = data.accountWithUpdatedBalance.edges[0]?.node
 
   return (
-    <Card className="balance-card">
-      <CardHeader>
-        <CardTitle>Account Balance</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {account ? (
-          <>
-            <div>Account Number: {account.accountNumber}</div>
-            <div>Balance: ${account.balance}</div>
-          </>
-        ) : (
-          <div>No account data available</div>
-        )}
-      </CardContent>
-      <CardFooter className="balance-card-footer">
-        <Button
-          variant="balanceCard"
-          className="balance-card-button"
-          onClick={() =>
-            navigate(`/deposit${idempotentRouteId(account.uniqueId)}`)
-          }
-        >
-          Deposit
-        </Button>
-        <Button
-          variant="balanceCard"
-          className="balance-card-button"
-          onClick={() =>
-            navigate(`/transaction${idempotentRouteId(account.uniqueId)}`)
-          }
-        >
-          Transaction
-        </Button>
-      </CardFooter>
-    </Card>
+    <div className="balance-card">
+      <Card>
+        <CardHeader>
+          <CardTitle>Account Balance</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {account ? (
+            <>
+              <div>Account Number: {account.accountNumber}</div>
+              <div>Balance: ${account.balance}</div>
+            </>
+          ) : (
+            <div>No account data available</div>
+          )}
+        </CardContent>
+        <CardFooter className="balance-card-footer">
+          <Button
+            variant="balanceCard"
+            className="balance-card-button"
+            onClick={() =>
+              navigate(`/deposit${idempotentRouteId(account.uniqueId)}`)
+            }
+          >
+            Deposit
+          </Button>
+          <Button
+            variant="balanceCard"
+            className="balance-card-button"
+            onClick={() =>
+              navigate(`/transaction${idempotentRouteId(account.uniqueId)}`)
+            }
+          >
+            Transaction
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   )
 }
 

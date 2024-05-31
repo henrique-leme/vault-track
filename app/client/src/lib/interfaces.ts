@@ -28,4 +28,5 @@ export interface CustomAlertDialogProps extends AlertDialogProps {
   message: string
   type: 'error' | 'warning' | 'info'
   onClose: () => void
+  onConfirm?: () => void
 }

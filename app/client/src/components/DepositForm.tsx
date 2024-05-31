@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import CustomAlertDialog from './ErrorDialog'
+import CustomAlertDialog from './CustomAlertDialog'
 import { useEffect, useState } from 'react'
 import { useMutation } from 'react-relay'
 import { CreateTransactionMutation } from './graphql/CreateTransactionMutation'
@@ -19,26 +19,36 @@ import { useParams } from 'react-router-dom'
 
 const transactionFormSchema = z.object({
   amount: z
-    .number({
+    .string({
       required_error: 'Amount is required',
     })
-    .positive({ message: 'Amount must be positive' }),
-  description: z.string().optional(),
+    .refine(
+      (val) => /^\d+(\.\d{1,2})?$/.test(val),
+      'Amount must be a number with up to two decimal places',
+    )
+    .transform((val) => parseFloat(val))
+    .refine((val) => val > 0, { message: 'Amount must be positive' }),
+  description: z
+    .string()
+    .max(20, 'Description must be 20 characters or less')
+    .optional(),
 })
+
+type TransactionFormValues = z.infer<typeof transactionFormSchema>
 
 export function DepositForm() {
   const { authState, setIdempotencyId } = useAuth()
   const { idempotencyId } = useParams<{ idempotencyId: string }>()
   const [commit, isInFlight] = useMutation(CreateTransactionMutation)
-  const [messageType, setMessage] = useState('')
+  const [messageType, setMessageType] = useState<string>('')
   const [alertType, setAlertType] = useState<'error' | 'warning' | 'info'>(
     'info',
   )
   const [showDialog, setShowDialog] = useState(false)
-  const form = useForm<z.infer<typeof transactionFormSchema>>({
+  const form = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
-      amount: 0,
+      amount: 0.0,
       description: '',
     },
   })
@@ -47,38 +57,38 @@ export function DepositForm() {
     if (idempotencyId) {
       setIdempotencyId(idempotencyId)
     }
-  }, [])
+  }, [idempotencyId, setIdempotencyId])
 
-  async function onSubmit(values: z.infer<typeof transactionFormSchema>) {
+  async function onSubmit(values: TransactionFormValues) {
     const variables = {
       sender: authState.user?.taxId,
       receiver: authState.user?.taxId,
       amount: values.amount,
       type: 'DEPOSIT',
-      description: values.description,
+      description: values.description || null,
     }
 
     commit({
       variables,
       onCompleted: (response?: any, errors?: any) => {
         if (errors) {
-          setMessage(errors[0].message)
+          setMessageType(errors[0].message)
           setAlertType('error')
           setShowDialog(true)
           return
         }
-        if (response.CreateTransaction.message) {
-          setMessage(response.CreateTransaction.message)
+        if (response?.CreateTransaction?.message) {
+          setMessageType(response.CreateTransaction.message)
           setAlertType('info')
           setShowDialog(true)
         } else {
-          setMessage('Unknown error occurred')
+          setMessageType('Unknown error occurred')
           setAlertType('error')
           setShowDialog(true)
         }
       },
       onError: (err) => {
-        setMessage(err.message)
+        setMessageType(err.message)
         setAlertType('error')
         setShowDialog(true)
       },
@@ -100,7 +110,7 @@ export function DepositForm() {
                     placeholder="Deposit value..."
                     type="number"
                     {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    onChange={(e) => field.onChange(e.target.value)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -113,7 +123,11 @@ export function DepositForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Description (optional)" {...field} />
+                  <Input
+                    placeholder="Description (optional)"
+                    {...field}
+                    maxLength={15}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -52,12 +52,7 @@ const Header = () => {
               >
                 Home
               </button>
-              <button
-                className="menu-item link-button"
-                onClick={() => handleNavigation('/transactions')}
-              >
-                Transactions
-              </button>
+
               <button
                 className="menu-item link-button"
                 onClick={() => handleNavigation('/profile')}
@@ -81,12 +76,7 @@ const Header = () => {
             >
               Home
             </button>
-            <button
-              className="menu-item link-button"
-              onClick={() => handleNavigation('/transactions')}
-            >
-              Transactions
-            </button>
+
             <button
               className="menu-item link-button"
               onClick={() => handleNavigation('/profile')}

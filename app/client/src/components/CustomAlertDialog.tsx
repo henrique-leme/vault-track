@@ -13,6 +13,7 @@ const CustomAlertDialog = ({
   message,
   type,
   onClose,
+  onConfirm,
   ...props
 }: CustomAlertDialogProps) => {
   return (
@@ -32,15 +33,18 @@ const CustomAlertDialog = ({
           </AlertDialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <span className="text-right">
-                {/* Additional content or styling can go here */}
-              </span>
+              <span className="text-right"></span>
             </div>
           </div>
           <AlertDialogFooter>
             <AlertDialogAction className="flex" onClick={onClose}>
               Close
             </AlertDialogAction>
+            {onConfirm && (
+              <AlertDialogAction className="flex" onClick={onConfirm}>
+                Confirm
+              </AlertDialogAction>
+            )}
           </AlertDialogFooter>
         </div>
       </AlertDialogContent>

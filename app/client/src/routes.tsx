@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage'
 import { RequireAuth } from './middleware'
 import TransactionPage from './pages/TransactionPage'
 import DepositPage from './pages/DepositPage'
+import ProfilePage from './pages/ProfilePage'
 
 export const routes: ReturnType<typeof createBrowserRouter> =
   createBrowserRouter([
@@ -21,6 +22,14 @@ export const routes: ReturnType<typeof createBrowserRouter> =
       element: (
         <RequireAuth>
           <HomePage />
+        </RequireAuth>
+      ),
+    },
+    {
+      path: '/profile',
+      element: (
+        <RequireAuth>
+          <ProfilePage />
         </RequireAuth>
       ),
     },

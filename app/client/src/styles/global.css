@@ -36,6 +36,23 @@
   .app-container {
     @apply flex flex-col min-h-screen;
   }
+  .content-container {
+    @apply flex-grow flex flex-col items-center;
+  }
+
+  .transaction-list-container {
+    @apply w-full max-w-xl p-8 m-8 shadow-lg rounded-xl bg-white border border-gray-300 overflow-y-auto overflow-x-auto;
+    min-width: var(--min-width);
+    max-height: 500px;
+  }
+
+  .transaction-item {
+    @apply p-4 border-b border-gray-200;
+  }
+
+  .transaction-item:last-child {
+    @apply border-b-0;
+  }
 
   header {
     @apply w-full bg-white border-b border-gray-200;
@@ -73,10 +90,6 @@
     @apply ml-10 flex items-baseline space-x-4;
   }
 
-  .content-container {
-    @apply flex-grow flex justify-center items-center;
-  }
-
   .balance-card {
     @apply w-full max-w-xl p-8 m-8 shadow-lg rounded-xl bg-white border border-gray-300;
     min-width: var(--min-width);
@@ -112,6 +125,11 @@
 
   .form-card {
     @apply w-full max-w-xl p-8 m-8 shadow-lg rounded-xl bg-white border border-gray-300 relative;
+    min-width: var(--min-width);
+  }
+
+  .profile-card {
+    @apply w-full p-8 m-8 shadow-lg max-h-min rounded-xl bg-white border border-gray-300 relative;
     min-width: var(--min-width);
   }
 
@@ -169,6 +187,10 @@
 /* Mobile Responsiveness */
 @media (max-width: 37.5rem) {
   .balance-card {
+    @apply w-[90%] p-4 m-4 mx-auto;
+  }
+
+  .transaction-list-container {
     @apply w-[90%] p-4 m-4 mx-auto;
   }
 

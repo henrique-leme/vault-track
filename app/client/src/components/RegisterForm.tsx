@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import CustomAlertDialog from './ErrorDialog'
+import CustomAlertDialog from './CustomAlertDialog'
 
 const registerFormSchema = z
   .object({
@@ -74,10 +74,7 @@ export function RegisterForm() {
   useEffect(() => {
     if (taxIdRef.current) {
       Inputmask({
-        mask: [
-          '999.999.999-99', // CPF format
-          '99.999.999/9999-99', // CNPJ format
-        ],
+        mask: ['999.999.999-99', '99.999.999/9999-99'],
         keepStatic: true,
         showMaskOnHover: false,
         showMaskOnFocus: true,

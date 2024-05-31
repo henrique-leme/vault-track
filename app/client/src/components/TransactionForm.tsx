@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import CustomAlertDialog from './ErrorDialog'
+import CustomAlertDialog from './CustomAlertDialog'
 import { useMutation } from 'react-relay'
 import { CreateTransactionMutation } from './graphql/CreateTransactionMutation'
 import { useAuth } from '@/context/AuthContext'
@@ -59,10 +59,7 @@ export function TransactionForm() {
   useEffect(() => {
     if (receiverRef.current) {
       Inputmask({
-        mask: [
-          '999.999.999-99', // CPF format
-          '99.999.999/9999-99', // CNPJ format
-        ],
+        mask: ['999.999.999-99', '99.999.999/9999-99'],
         keepStatic: true,
         showMaskOnHover: false,
         showMaskOnFocus: true,

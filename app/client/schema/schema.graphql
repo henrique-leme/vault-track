@@ -129,7 +129,7 @@ input UpdateUserInput {
 
 type UpdateUserPayload {
   clientMutationId: String
-  updateUser: User
+  updatedUser: User
 }
 
 # Query definitions

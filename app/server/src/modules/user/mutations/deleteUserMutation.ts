@@ -17,7 +17,7 @@ export type DeleteUserData = {
 const mutation = mutationWithClientMutationId({
   name: 'DeleteUser',
   inputFields: {
-    jwt: {
+    taxId: {
       type: new GraphQLNonNull(GraphQLString),
     },
   },
@@ -40,14 +40,14 @@ const mutation = mutationWithClientMutationId({
     await deleteUserByTaxId(data.taxId)
 
     return {
-      deleteUser: { taxId: data.taxId, accountNumber: account.accountNumber },
+      deletedUser: { taxId: data.taxId, accountNumber: account.accountNumber },
       message: 'User have been deleted successfully.',
     }
   },
   outputFields: {
-    deleteUser: {
+    deletedUser: {
       type: userType,
-      resolve: async (payload) => (await payload).deleteUser,
+      resolve: async (payload) => (await payload).deletedUser,
     },
     message: {
       type: GraphQLString,
