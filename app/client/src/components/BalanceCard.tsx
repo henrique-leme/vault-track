@@ -1,19 +1,49 @@
+import { useAuth } from '@/context/AuthContext'
 import { Button } from './ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
+import { useLazyLoadQuery } from 'react-relay'
+import { AccountWithBalance } from './graphql/AccountWithBalance'
+import { useNavigate } from 'react-router-dom'
 
 const BalanceCard = () => {
+  const { authState } = useAuth()
+  const data: any = useLazyLoadQuery(AccountWithBalance, {
+    taxId: authState?.user?.taxId,
+  })
+  const navigate = useNavigate()
+
+  const account = data.accountWithUpdatedBalance.edges[0]?.node
+
   return (
-    <Card className="balanceCard">
+    <Card className="balance-card">
       <CardHeader>
         <CardTitle>Account Balance</CardTitle>
       </CardHeader>
       <CardContent>
-        <div>AccountNumber: 0000000000000000</div>
-        <div>Balance: 000000000</div>
+        {account ? (
+          <>
+            <div>Account Number: {account.accountNumber}</div>
+            <div>Balance: {account.balance}</div>
+          </>
+        ) : (
+          <div>No account data available</div>
+        )}
       </CardContent>
-      <CardFooter className="balanceCardFooter">
-        <Button className="balanceCardButton">Deposit</Button>
-        <Button className="balanceCardButton">Transaction</Button>
+      <CardFooter className="balance-card-footer">
+        <Button
+          variant="balanceCard"
+          className="balance-card-button"
+          onClick={() => navigate('/deposit')}
+        >
+          Deposit
+        </Button>
+        <Button
+          variant="balanceCard"
+          className="balance-card-button"
+          onClick={() => navigate('/transaction')}
+        >
+          Transaction
+        </Button>
       </CardFooter>
     </Card>
   )

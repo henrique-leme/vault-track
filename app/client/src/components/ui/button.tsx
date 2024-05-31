@@ -18,6 +18,10 @@ const buttonVariants = cva(
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        balanceCard:
+          'bg-[var(--primary-main)] text-white py-2 px-4 rounded-lg hover:bg-[var(--primary-main-hover)]',
+        formButton:
+          'bg-[var(--primary-main)] text-white py-3.5 px-5 rounded-lg hover:bg-[var(--primary-main-hover)] mx-2',
       },
       size: {
         default: 'h-10 px-4 py-2',
