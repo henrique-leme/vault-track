@@ -1,4 +1,12 @@
+import { useEffect, useRef, useState } from 'react'
 import { useMutation } from 'react-relay'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import Inputmask from 'inputmask'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/context/AuthContext'
+import { RegisterUserMutation } from './graphql/RegisterUserMutation'
 import {
   Form,
   FormControl,
@@ -6,15 +14,8 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/context/AuthContext'
-import { useState } from 'react'
-import { RegisterUserMutation } from './graphql/RegisterUserMutation'
+import { Input } from '@/components/ui/input'
 import CustomAlertDialog from './ErrorDialog'
 
 const registerFormSchema = z
@@ -27,7 +28,7 @@ const registerFormSchema = z
       })
       .refine((doc) => {
         const replacedDoc = doc.replace(/\D/g, '')
-        return replacedDoc.length === 11 || 14
+        return replacedDoc.length === 11 || replacedDoc.length === 14
       }, 'Tax identification must be 11 characters for CPF or 14 characters for CNPJ.')
       .refine((doc) => {
         const replacedDoc = doc.replace(/\D/g, '')
@@ -68,6 +69,21 @@ export function RegisterForm() {
       repeatPassword: '',
     },
   })
+  const taxIdRef = useRef(null)
+
+  useEffect(() => {
+    if (taxIdRef.current) {
+      Inputmask({
+        mask: [
+          '999.999.999-99', // CPF format
+          '99.999.999/9999-99', // CNPJ format
+        ],
+        keepStatic: true,
+        showMaskOnHover: false,
+        showMaskOnFocus: true,
+      }).mask(taxIdRef.current)
+    }
+  }, [])
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     const variables = {
@@ -143,7 +159,11 @@ export function RegisterForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Tax identification..." {...field} />
+                  <Input
+                    placeholder="Tax identification..."
+                    {...field}
+                    ref={taxIdRef}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

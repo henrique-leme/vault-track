@@ -1,6 +1,8 @@
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import Inputmask from 'inputmask'
 import {
   Form,
   FormControl,
@@ -11,14 +13,22 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import CustomAlertDialog from './ErrorDialog'
-import { useEffect, useState } from 'react'
 import { useMutation } from 'react-relay'
 import { CreateTransactionMutation } from './graphql/CreateTransactionMutation'
 import { useAuth } from '@/context/AuthContext'
 import { useParams } from 'react-router-dom'
 
 const transactionFormSchema = z.object({
-  receiver: z.string({ required_error: 'Receiver taxId is required' }),
+  receiver: z
+    .string({ required_error: 'Receiver taxId is required' })
+    .refine((doc) => {
+      const replacedDoc = doc.replace(/\D/g, '')
+      return replacedDoc.length === 11 || replacedDoc.length === 14
+    }, 'Tax identification must be 11 characters for CPF or 14 characters for CNPJ.')
+    .refine((doc) => {
+      const replacedDoc = doc.replace(/\D/g, '')
+      return /^[0-9]+$/.test(replacedDoc)
+    }, 'Tax identification must contain only numbers.'),
   amount: z
     .number({
       required_error: 'Amount is required',
@@ -44,12 +54,27 @@ export function TransactionForm() {
       description: '',
     },
   })
+  const receiverRef = useRef(null)
+
+  useEffect(() => {
+    if (receiverRef.current) {
+      Inputmask({
+        mask: [
+          '999.999.999-99', // CPF format
+          '99.999.999/9999-99', // CNPJ format
+        ],
+        keepStatic: true,
+        showMaskOnHover: false,
+        showMaskOnFocus: true,
+      }).mask(receiverRef.current)
+    }
+  }, [])
 
   useEffect(() => {
     if (idempotencyId) {
       setIdempotencyId(idempotencyId)
     }
-  }, [])
+  }, [idempotencyId, setIdempotencyId])
 
   async function onSubmit(values: z.infer<typeof transactionFormSchema>) {
     const variables = {
@@ -101,6 +126,7 @@ export function TransactionForm() {
                   <Input
                     placeholder="Receiver tax identification..."
                     {...field}
+                    ref={receiverRef}
                   />
                 </FormControl>
                 <FormMessage />
@@ -114,7 +140,7 @@ export function TransactionForm() {
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="Transation value..."
+                    placeholder="Transaction value..."
                     type="number"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}

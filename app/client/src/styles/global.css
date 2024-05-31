@@ -99,11 +99,11 @@
   }
 
   .balance-card-button {
-    @apply bg-[var(--primary-main)] text-white py-2 px-4 rounded-lg mx-2;
+    @apply bg-green-60 text-white py-2 px-4 rounded-lg mx-2;
   }
 
   .balance-card-button:hover {
-    @apply bg-[var(--primary-main-hover)];
+    @apply bg-green-140;
   }
 
   .container {
@@ -125,7 +125,7 @@
 
   input,
   textarea {
-    @apply w-full p-3 mb-4 box-border border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary-main)];
+    @apply w-full p-3 mb-4 box-border border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-60;
     min-width: var(--min-width);
   }
 
@@ -134,11 +134,15 @@
   }
 
   button {
-    @apply w-full py-3.5 px-5 mb-4 border-0 rounded-lg cursor-pointer text-base bg-[var(--primary-main)] text-white;
+    @apply w-full py-3.5 px-5 mb-4 border-0 rounded-lg cursor-pointer text-base bg-green-60 text-white;
   }
 
   button:hover {
-    @apply bg-[var(--primary-main-hover)];
+    @apply bg-green-140;
+  }
+
+  .link-button {
+    @apply bg-transparent border-0 text-gray-900 hover:text-gray-700 hover:bg-gray-20 hover:shadow-md cursor-pointer;
   }
 
   .button-form {
@@ -146,7 +150,7 @@
   }
 
   .button-form:hover {
-    @apply bg-[var(--primary-main-hover)];
+    @apply bg-green-140;
   }
 
   .link-container {

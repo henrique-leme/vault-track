@@ -1,4 +1,12 @@
+import { SetStateAction, useEffect, useRef, useState } from 'react'
 import { useMutation } from 'react-relay'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import Inputmask from 'inputmask'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/context/AuthContext'
+import { LoginUserMutation } from './graphql/LoginUserMutation'
 import {
   Form,
   FormControl,
@@ -6,16 +14,9 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/context/AuthContext'
-import { SetStateAction, useState } from 'react'
-import CustomAlertDialog from './ErrorDialog'
-import { LoginUserMutation } from './graphql/LoginUserMutation'
 import { Input } from './ui/input'
+import CustomAlertDialog from './ErrorDialog'
 
 const loginFormSchema = z.object({
   taxId: z
@@ -25,7 +26,7 @@ const loginFormSchema = z.object({
     .refine((doc) => {
       const replacedDoc = doc.replace(/\D/g, '')
       return replacedDoc.length === 11 || replacedDoc.length === 14
-    }, 'Tax identification must be 11 characters for CPF ou 14 characters for CNPJ.')
+    }, 'Tax identification must be 11 characters for CPF or 14 characters for CNPJ.')
     .refine((doc) => {
       const replacedDoc = doc.replace(/\D/g, '')
       return /^[0-9]+$/.test(replacedDoc)
@@ -50,6 +51,18 @@ export function LoginForm() {
       password: '',
     },
   })
+  const taxIdRef = useRef(null)
+
+  useEffect(() => {
+    if (taxIdRef.current) {
+      Inputmask({
+        mask: ['999.999.999-99', '99.999.999/9999-99'],
+        keepStatic: true,
+        showMaskOnHover: false,
+        showMaskOnFocus: true,
+      }).mask(taxIdRef.current)
+    }
+  }, [])
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     const variables = {
@@ -96,7 +109,11 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Tax Identification..." {...field} />
+                  <Input
+                    placeholder="Tax Identification..."
+                    {...field}
+                    ref={taxIdRef}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

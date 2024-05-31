@@ -59,6 +59,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      inputmask:
+        specifier: ^5.0.9
+        version: 5.0.9
       lucide-react:
         specifier: ^0.379.0
         version: 0.379.0(react@18.3.1)
@@ -96,6 +99,9 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
+      '@types/inputmask':
+        specifier: ^5.0.7
+        version: 5.0.7
       '@types/react':
         specifier: ^18.2.66
         version: 18.3.2
@@ -1256,6 +1262,9 @@ packages:
   '@types/http-errors@2.0.4':
     resolution: {integrity: sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==}
 
+  '@types/inputmask@5.0.7':
+    resolution: {integrity: sha512-uojbVPWzBQ/n/0jc/d16fLqmGasFIptbrLD2WrCPWArlk+5PgblOqH4EDkI3AoobXLAlOK5yF01V8jMmvMG5qg==}
+
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
 
@@ -2381,6 +2390,9 @@ packages:
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
+
+  inputmask@5.0.9:
+    resolution: {integrity: sha512-s0lUfqcEbel+EQXtehXqwCJGShutgieOaIImFKC/r4reYNvX3foyrChl6LOEvaEgxEbesePIrw1Zi2jhZaDZbQ==}
 
   invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
@@ -5093,6 +5105,8 @@ snapshots:
 
   '@types/http-errors@2.0.4': {}
 
+  '@types/inputmask@5.0.7': {}
+
   '@types/istanbul-lib-coverage@2.0.6': {}
 
   '@types/istanbul-lib-report@3.0.3':
@@ -6322,6 +6336,8 @@ snapshots:
       wrappy: 1.0.2
 
   inherits@2.0.4: {}
+
+  inputmask@5.0.9: {}
 
   invariant@2.2.4:
     dependencies:

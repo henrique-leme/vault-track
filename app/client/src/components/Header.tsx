@@ -46,30 +46,27 @@ const Header = () => {
           </div>
           <div className="menu-items-desktop">
             <div className="menu-items-baseline">
-              <a
-                href=""
-                className="menu-item"
-                onClick={() => navigate('/home')}
+              <button
+                className="menu-item link-button"
+                onClick={() => handleNavigation('/home')}
               >
                 Home
-              </a>
-              <a
-                href=""
-                className="menu-item"
+              </button>
+              <button
+                className="menu-item link-button"
                 onClick={() => handleNavigation('/transactions')}
               >
                 Transactions
-              </a>
-              <a
-                href=""
-                className="menu-item"
+              </button>
+              <button
+                className="menu-item link-button"
                 onClick={() => handleNavigation('/profile')}
               >
                 Profile
-              </a>
-              <a href="" className="menu-item" onClick={handleLogout}>
+              </button>
+              <button className="menu-item link-button" onClick={handleLogout}>
                 Logout
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -78,30 +75,27 @@ const Header = () => {
       {isOpen && (
         <div className="menu-items-mobile">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a
-              href=""
-              className="menu-item"
+            <button
+              className="menu-item link-button"
               onClick={() => handleNavigation('/home')}
             >
               Home
-            </a>
-            <a
-              href=""
-              className="menu-item"
+            </button>
+            <button
+              className="menu-item link-button"
               onClick={() => handleNavigation('/transactions')}
             >
               Transactions
-            </a>
-            <a
-              href=""
-              className="menu-item"
+            </button>
+            <button
+              className="menu-item link-button"
               onClick={() => handleNavigation('/profile')}
             >
               Profile
-            </a>
-            <a href="" className="menu-item" onClick={handleLogout}>
+            </button>
+            <button className="menu-item link-button" onClick={handleLogout}>
               Logout
-            </a>
+            </button>
           </div>
         </div>
       )}
