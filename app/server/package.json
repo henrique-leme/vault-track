@@ -2,7 +2,7 @@
   "name": "vault-track-server",
   "version": "1.0.0",
   "scripts": {
-    "build": "",
+    "build": "tsc",
     "dev": "tsx watch src/index.ts",
     "start": "",
     "lint": "eslint . --ext .js,.ts",
