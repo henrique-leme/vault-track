@@ -4,7 +4,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch src/index.ts",
-    "start": "",
+    "start": "tsx src/index.ts",
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "eslint . --ext .ts,.js --fix",
     "test": "jest --config jest.config.ts ./__tests__ --detectOpenHandles --forceExit"
