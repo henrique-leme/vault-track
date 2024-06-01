@@ -7,7 +7,7 @@ import {
   Variables,
 } from 'relay-runtime'
 
-const HTTP_ENDPOINT = 'http://localhost:8080/graphql'
+const HTTP_ENDPOINT = import.meta.env.VITE_SERVER_URL
 
 const fetchFn = async (
   request: RequestParameters,
