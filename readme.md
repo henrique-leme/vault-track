@@ -114,7 +114,9 @@ Ensure you have the following installed:
   - [Vite](https://vitejs.dev/) - The build tool
   - [Relay](https://relay.dev/) - The GraphQL framework
   - [TailwindCSS](https://tailwindcss.com/) - The CSS framework
-  - [Storybook](https://storybook.js.org/) - The tool for UI component development
+  - [Storybook](https://storybook.js.org/) - The tool for UI component
+    development
+  - [Vitest](https://vitest.dev/) - The tests
 
 - Server:
   - [Node.js](https://nodejs.org/) - The runtime environment
