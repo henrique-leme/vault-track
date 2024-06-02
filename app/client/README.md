@@ -105,6 +105,7 @@ This will run the frontend server and Storybook on your local machine.
 - [Relay](https://relay.dev/) - The GraphQL framework
 - [TailwindCSS](https://tailwindcss.com/) - The CSS framework
 - [Storybook](https://storybook.js.org/) - The tool for UI component development
+- [Vitest](https://vitest.dev/) - The tests
 
 ## ✒️ Authors
 
