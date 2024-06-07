@@ -2,7 +2,7 @@ import { mongo } from '@/database'
 import { config } from '@/config'
 import { setupApp } from './setup-app'
 
-export async function startApp() {
+async function startApp() {
   await mongo()
 
   setupApp().then((app) => {

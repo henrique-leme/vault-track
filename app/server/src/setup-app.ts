@@ -10,7 +10,7 @@ export const setupApp = async () => {
   const app = new Koa()
   const router = new Router()
 
-  app.use(cors())
+  app.use(cors({ origin: '*' }))
   app.use(bodyParser())
 
   app.use(contextMiddleware)
