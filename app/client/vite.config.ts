@@ -14,6 +14,9 @@ export default defineConfig({
       '@/components/*': path.resolve(__dirname, './src/components/*'),
     },
   },
+  build: {
+    outDir: 'dist',
+  },
   test: {
     include: ['**/*.{test,spec}.?(c|m)[jt]s?(x)'],
   },
