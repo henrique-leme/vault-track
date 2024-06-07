@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "github": {
+    "enabled": true
+  },
+  "builds": [
+    {
+      "src": "/app/server/dist/src/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "/app/client/dist/*",
+      "use": "@vercel/node"
+    }
+  ]
+}
