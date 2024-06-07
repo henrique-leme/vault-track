@@ -1,15 +1,15 @@
 {
-	"$schema": "https://turbo.build/schema.json",
-	"pipeline": {
-		"build": {},
-		"dev": {
-            "persistent": true,
-            "cache": false
-        },
-		"start": {},
-        "relay": {},
-        "test": {},
-		"lint": {},
-		"lint:fix": {}
-	}
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {},
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "start": {},
+    "relay": {},
+    "test": {},
+    "lint": {},
+    "lint:fix": {}
+  }
 }
