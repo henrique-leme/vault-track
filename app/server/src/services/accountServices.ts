@@ -66,7 +66,7 @@ export const calculateBalance = async (accountNumber: number) => {
   }))
 }
 
-export const updateBalance = async (accountNumber: number) => {
+export const updateBalance = async (accountNumber: number, session?: any) => {
   await findAccountByAccountNumber(accountNumber)
 
   const currentBalance = await calculateBalance(accountNumber)
@@ -81,7 +81,10 @@ export const updateBalance = async (accountNumber: number) => {
     {
       balance: balanceToUpdate,
     },
-    { new: true },
+    {
+      session: session,
+      new: true,
+    },
   )
 
   return account?.balance
@@ -182,11 +185,12 @@ export async function lockAccountForTransaction(taxId: string, session: any) {
     },
     {
       $set: {
-        lokId: new mongoose.Types.ObjectId(),
+        lockId: new mongoose.Types.ObjectId(),
       },
     },
     {
-      session,
+      session: session,
+      new: true,
     },
   )
 }
