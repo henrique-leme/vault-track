@@ -29,11 +29,14 @@ export async function idempotencyCheck(idempotencyId: string) {
 export async function createTransaction(
   data: TransactionData,
   idempotencyId: string,
+  session: any, // tipar ne papaikk
 ) {
   const { accountNumber: accountSender } = await findAccountByTaxId(data.sender)
+  await lockAccountForTransaction(data.sender, session)
   const { accountNumber: accountReceiver } = await findAccountByTaxId(
     data.receiver,
   )
+
   const decimalAmount = mongoose.Types.Decimal128.fromString(
     data.amount.toString(),
   )

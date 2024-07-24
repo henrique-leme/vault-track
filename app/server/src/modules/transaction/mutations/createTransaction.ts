@@ -70,15 +70,15 @@ const mutation = mutationWithClientMutationId({
       switch (data.type) {
         case 'DEPOSIT':
           await createDepositTransaction(data, idempotencyId, session)
-          await updateBalance(receiverAccount.accountNumber)
+          await updateBalance(receiverAccount.accountNumber, session)
 
           break
         case 'TRANSFER':
           await verifyBalance(data.amount, senderAccount)
-          await createTransaction(data, idempotencyId)
+          await createTransaction(data, idempotencyId, session)
 
-          await updateBalance(senderAccount.accountNumber)
-          await updateBalance(receiverAccount.accountNumber)
+          await updateBalance(senderAccount.accountNumber, session)
+          await updateBalance(receiverAccount.accountNumber, session)
 
           break
       }
