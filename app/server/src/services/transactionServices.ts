@@ -1,6 +1,9 @@
 import { AccountModel } from '../../src/models/account.model'
 import { TransactionError } from '../../src/utils/transactionError'
-import { findAccountByTaxId } from '../../src/services/accountServices'
+import {
+  findAccountByTaxId,
+  lockAccountForTransaction,
+} from '../../src/services/accountServices'
 import { TransactionData } from '@/modules/transaction/mutations/createTransaction'
 import transactionModel from '../../src/models/transaction.model'
 import mongoose from 'mongoose'
@@ -99,11 +102,18 @@ export async function listTransactionsByAccountNumber(accountNumber: number) {
 export async function createDepositTransaction(
   data: TransactionData,
   idempotencyId: string,
+  session: any, // tipar ne papaik
 ) {
+  session.startTransaction({
+    readConcern: { level: 'snapshot' },
+    writeConcern: { w: 'majority' },
+  })
   const accountSender = 10000000000
   const { accountNumber: accountReceiver } = await findAccountByTaxId(
     data.receiver,
   )
+  await lockAccountForTransaction(data.receiver, session)
+
   const decimalAmount = mongoose.Types.Decimal128.fromString(
     data.amount.toString(),
   )

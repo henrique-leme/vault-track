@@ -114,7 +114,6 @@ export async function findAccountByUserId(userId: any) {
     message: 'There is no account for this user, contact the support.',
   })
 }
-
 export async function findAccountByTaxId(taxId: string) {
   const user = await userModel.findOne({
     taxId: taxId,
@@ -174,4 +173,20 @@ export async function deleteAccount(accountNumber: number) {
   await accountModel.deleteOne({ accountNumber: accountNumber })
 
   return true
+}
+
+export async function lockAccountForTransaction(taxId: string, session: any) {
+  await accountModel.findOneAndUpdate(
+    {
+      userId: taxId,
+    },
+    {
+      $set: {
+        lokId: new mongoose.Types.ObjectId(),
+      },
+    },
+    {
+      session,
+    },
+  )
 }
