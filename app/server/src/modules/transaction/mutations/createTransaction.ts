@@ -85,6 +85,7 @@ const mutation = mutationWithClientMutationId({
 
       // Finaliza a session
       await session.commitTransaction()
+      await session.endSession()
       return {
         message: ETransactionMessageResponse.SUCCEED,
       }
