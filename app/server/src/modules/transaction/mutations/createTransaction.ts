@@ -12,6 +12,7 @@ import {
 } from 'src/services/transactionServices'
 import { JwtPayload } from 'jsonwebtoken'
 import { TokenError } from 'src/utils/tokenError'
+import mongoose from 'mongoose'
 
 export type TransactionData = {
   sender: string
@@ -62,6 +63,10 @@ const mutation = mutationWithClientMutationId({
     if (invalidTransaction === false) {
       const { senderAccount, receiverAccount } =
         await transactionAccountValidations(data)
+      // Inicia a session
+      const session = await mongoose.startSession({
+        defaultTransactionOptions: { readConcern: { level: 'majority' } },
+      })
       switch (data.type) {
         case 'DEPOSIT':
           await createDepositTransaction(data, idempotencyId)
@@ -77,6 +82,9 @@ const mutation = mutationWithClientMutationId({
 
           break
       }
+
+      // Finaliza a session
+      await session.commitTransaction()
       return {
         message: ETransactionMessageResponse.SUCCEED,
       }
